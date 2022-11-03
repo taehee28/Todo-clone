@@ -18,5 +18,5 @@ class SharedViewModel @Inject constructor(
         initialValue = emptyList()
     )
 
-    
+
 }
