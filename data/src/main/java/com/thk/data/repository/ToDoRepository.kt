@@ -18,7 +18,6 @@ interface ToDoRepository {
     fun searchDatabase(searchQuery: String): Flow<List<ToDoTask>>
 }
 
-@ViewModelScoped    // 주입된 viewModel이 살아있는 동안만 해당 인스턴스도 살아있을 것 이라는 표시
 class ToDoRepositoryImpl @Inject constructor(
     private val toDoDao: ToDoDao
 ) : ToDoRepository {

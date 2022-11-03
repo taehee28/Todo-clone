@@ -5,6 +5,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.thk.data.util.Constants
+import com.thk.todo_clone.ui.screens.list.ListScreen
 
 /**
  * list 화면에 대한 navGraph의 composable 호출을 해당 화면 파일에 모아둠
@@ -20,6 +21,6 @@ fun NavGraphBuilder.listComposable(
             type = NavType.StringType
         })
     ) {
-
+        ListScreen(navigateToTaskScreen = navigateToTaskScreen)
     }
 }

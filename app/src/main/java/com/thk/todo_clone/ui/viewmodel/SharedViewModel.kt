@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
+/*
 @HiltViewModel
 class SharedViewModel @Inject constructor(
     private val repository: ToDoRepository
@@ -19,4 +20,4 @@ class SharedViewModel @Inject constructor(
     )
 
 
-}
+}*/
