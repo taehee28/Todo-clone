@@ -21,6 +21,10 @@ val NonePriorityColor = Color(0xFFFFFFFF)
 /*
 * MaterialTheme.colors로 접근할 수 있는 커스텀 변수 생성
 * */
+val Colors.fabBackgroundColor: Color
+    @Composable
+    get() = if (isLight) Teal200 else Purple700
+
 val Colors.topAppBarContentColor: Color
     @Composable
     get() = if (isLight) Color.White else LightGray
