@@ -2,4 +2,7 @@
     <string name="app_name">Todo-clone</string>
 
     <string name="add_button">add button</string>
+    <string name="search_action">Search tasks</string>
+    <string name="sort_action">Sort tasks</string>
+    <string name="delete_all_action">Delete All</string>
 </resources>
