@@ -12,18 +12,21 @@ class Dimensions(
     val smallPadding: Dp = 6.dp,
     val mediumPadding: Dp = 8.dp,
     val largePadding: Dp = 12.dp,
-    val priorityIndicatorSize: Dp = 16.dp
+    val priorityIndicatorSize: Dp = 16.dp,
+    val topAppBarHeight: Dp = 56.dp
 ) {
     fun copy(
         smallPadding: Dp = this.smallPadding,
         mediumPadding: Dp = this.mediumPadding,
         largePadding: Dp = this.largePadding,
-        priorityIndicatorSize: Dp = this.priorityIndicatorSize
+        priorityIndicatorSize: Dp = this.priorityIndicatorSize,
+        topAppBarHeight: Dp = this.topAppBarHeight
     ): Dimensions = Dimensions(
         smallPadding = smallPadding,
         mediumPadding = mediumPadding,
         largePadding = largePadding,
-        priorityIndicatorSize = priorityIndicatorSize
+        priorityIndicatorSize = priorityIndicatorSize,
+        topAppBarHeight = topAppBarHeight
     )
 
     override fun equals(other: Any?): Boolean {
@@ -34,6 +37,7 @@ class Dimensions(
         if (mediumPadding != other.mediumPadding) return false
         if (largePadding != other.largePadding) return false
         if (priorityIndicatorSize != other.priorityIndicatorSize) return false
+        if (topAppBarHeight != other.topAppBarHeight) return false
 
         return true
     }
@@ -43,6 +47,7 @@ class Dimensions(
         result = 31 * result + mediumPadding.hashCode()
         result = 31 * result + largePadding.hashCode()
         result = 31 * result + priorityIndicatorSize.hashCode()
+        result = 31 * result + topAppBarHeight.hashCode()
         return result
     }
 
@@ -51,7 +56,8 @@ class Dimensions(
                 "smallPadding=$smallPadding, " +
                 "mediumPadding=$mediumPadding, " +
                 "largePadding=$largePadding, " +
-                "priorityIndicatorSize=$priorityIndicatorSize" +
+                "priorityIndicatorSize=$priorityIndicatorSize," +
+                "topAppBarHeight=$topAppBarHeight" +
                 ")"
     }
 }
