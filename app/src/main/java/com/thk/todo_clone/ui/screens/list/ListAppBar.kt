@@ -25,14 +25,37 @@ import com.thk.todo_clone.R
 import com.thk.todo_clone.ui.components.PriorityItem
 import com.thk.todo_clone.ui.theme.TodoTheme
 import com.thk.todo_clone.ui.theme.Typography
+import com.thk.todo_clone.ui.viewmodel.SharedViewModel
+import com.thk.todo_clone.util.SearchAppBarState
+import com.thk.todo_clone.util.TrailingIconState
 
 @Composable
-fun ListAppBar() {
-    DefaultListAppBar(
-        onSearchClicked = {},
-        onSortClicked = {},
-        onDeleteClicked = {}
-    )
+fun ListAppBar(
+    searchAppBarState: SearchAppBarState,
+    setAppBarState: (SearchAppBarState) -> Unit,
+    searchTextState: String,
+    setSearchTextState: (String) -> Unit
+) {
+    when (searchAppBarState) {
+        SearchAppBarState.CLOSED -> {
+            DefaultListAppBar(
+                onSearchClicked = { setAppBarState(SearchAppBarState.OPENED) },
+                onSortClicked = {},
+                onDeleteClicked = {}
+            )
+        }
+        else -> {
+            SearchAppBar(
+                text = searchTextState,
+                onTextChange = setSearchTextState,
+                onCloseClicked = {
+                    setAppBarState(SearchAppBarState.CLOSED)
+                    /*setSearchTextState("")*/
+                },
+                onSearchClicked = {}
+            )
+        }
+    }
 }
 
 @Composable
@@ -176,60 +199,81 @@ fun SearchAppBar(
     onTextChange: (String) -> Unit,
     onCloseClicked: () -> Unit,
     onSearchClicked: (String) -> Unit
-) = Surface(
-    modifier = Modifier
-        .fillMaxWidth()
-        .height(TodoTheme.dimens.topAppBarHeight),
-    elevation = AppBarDefaults.TopAppBarElevation,
-    color = MaterialTheme.colors.topAppBarBackgroundColor
 ) {
-    TextField(
-        value = text,
-        onValueChange = onTextChange,
-        modifier = Modifier.fillMaxWidth(),
-        placeholder = {
-            Text(
-                text = "Search",
-                color = Color.White,
-                modifier = Modifier.alpha(ContentAlpha.medium)
-            )
-        },
-        textStyle = TextStyle(
-            color = MaterialTheme.colors.topAppBarContentColor,
-            fontSize = MaterialTheme.typography.subtitle1.fontSize
-        ),
-        singleLine = true,
-        leadingIcon = {
-            IconButton(
-                onClick = { /*TODO*/ },
-                modifier = Modifier.alpha(ContentAlpha.disabled)
-            ) {
-                Icon(imageVector = Icons.Filled.Search, contentDescription = "Search Icon", tint =  MaterialTheme.colors.topAppBarContentColor)
-            }
-        },
-        trailingIcon = {
-            IconButton(onClick = onCloseClicked) {
-                Icon(
-                    imageVector = Icons.Filled.Close,
-                    contentDescription = "Close Icon",
-                    tint = MaterialTheme.colors.topAppBarContentColor
+    var trailingIconState by remember { mutableStateOf(TrailingIconState.READY_TO_DELETE) }
+
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(TodoTheme.dimens.topAppBarHeight),
+        elevation = AppBarDefaults.TopAppBarElevation,
+        color = MaterialTheme.colors.topAppBarBackgroundColor
+    ) {
+        TextField(
+            value = text,
+            onValueChange = onTextChange,
+            modifier = Modifier.fillMaxWidth(),
+            placeholder = {
+                Text(
+                    text = "Search",
+                    color = Color.White,
+                    modifier = Modifier.alpha(ContentAlpha.medium)
                 )
-            }
-        },
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Search
-        ),
-        keyboardActions = KeyboardActions(
-            onSearch = { onSearchClicked(text) }
-        ),
-        colors = TextFieldDefaults.textFieldColors(
-            cursorColor = MaterialTheme.colors.topAppBarContentColor,
-            focusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            backgroundColor = Color.Transparent
+            },
+            textStyle = TextStyle(
+                color = MaterialTheme.colors.topAppBarContentColor,
+                fontSize = MaterialTheme.typography.subtitle1.fontSize
+            ),
+            singleLine = true,
+            leadingIcon = {
+                IconButton(
+                    onClick = { /*TODO*/ },
+                    modifier = Modifier.alpha(ContentAlpha.disabled)
+                ) {
+                    Icon(imageVector = Icons.Filled.Search, contentDescription = "Search Icon", tint =  MaterialTheme.colors.topAppBarContentColor)
+                }
+            },
+            trailingIcon = {
+                IconButton(
+                    onClick = {
+                        when (trailingIconState) {
+                            TrailingIconState.READY_TO_DELETE -> {
+                                onTextChange("")
+                                trailingIconState = TrailingIconState.READY_TO_CLOSE
+                            }
+                            TrailingIconState.READY_TO_CLOSE -> {
+                                if (text.isNotBlank()) {
+                                    onTextChange("")
+                                } else {
+                                    onCloseClicked()
+                                    trailingIconState = TrailingIconState.READY_TO_DELETE
+                                }
+                            }
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = "Close Icon",
+                        tint = MaterialTheme.colors.topAppBarContentColor
+                    )
+                }
+            },
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Search
+            ),
+            keyboardActions = KeyboardActions(
+                onSearch = { onSearchClicked(text) }
+            ),
+            colors = TextFieldDefaults.textFieldColors(
+                cursorColor = MaterialTheme.colors.topAppBarContentColor,
+                focusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                backgroundColor = Color.Transparent
+            )
         )
-    )
+    }
 }
 
 @Composable
