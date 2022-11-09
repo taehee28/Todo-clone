@@ -13,20 +13,23 @@ class Dimensions(
     val mediumPadding: Dp = 8.dp,
     val largePadding: Dp = 12.dp,
     val priorityIndicatorSize: Dp = 16.dp,
-    val topAppBarHeight: Dp = 56.dp
+    val topAppBarHeight: Dp = 56.dp,
+    val taskItemElevation: Dp = 2.dp
 ) {
     fun copy(
         smallPadding: Dp = this.smallPadding,
         mediumPadding: Dp = this.mediumPadding,
         largePadding: Dp = this.largePadding,
         priorityIndicatorSize: Dp = this.priorityIndicatorSize,
-        topAppBarHeight: Dp = this.topAppBarHeight
+        topAppBarHeight: Dp = this.topAppBarHeight,
+        taskItemElevation: Dp = this.taskItemElevation
     ): Dimensions = Dimensions(
         smallPadding = smallPadding,
         mediumPadding = mediumPadding,
         largePadding = largePadding,
         priorityIndicatorSize = priorityIndicatorSize,
-        topAppBarHeight = topAppBarHeight
+        topAppBarHeight = topAppBarHeight,
+        taskItemElevation = taskItemElevation
     )
 
     override fun equals(other: Any?): Boolean {
@@ -38,6 +41,7 @@ class Dimensions(
         if (largePadding != other.largePadding) return false
         if (priorityIndicatorSize != other.priorityIndicatorSize) return false
         if (topAppBarHeight != other.topAppBarHeight) return false
+        if (taskItemElevation != other.taskItemElevation) return false
 
         return true
     }
@@ -48,6 +52,7 @@ class Dimensions(
         result = 31 * result + largePadding.hashCode()
         result = 31 * result + priorityIndicatorSize.hashCode()
         result = 31 * result + topAppBarHeight.hashCode()
+        result = 31 * result + taskItemElevation.hashCode()
         return result
     }
 
@@ -57,7 +62,8 @@ class Dimensions(
                 "mediumPadding=$mediumPadding, " +
                 "largePadding=$largePadding, " +
                 "priorityIndicatorSize=$priorityIndicatorSize," +
-                "topAppBarHeight=$topAppBarHeight" +
+                "topAppBarHeight=$topAppBarHeight," +
+                "taskItemElevation=$taskItemElevation" +
                 ")"
     }
 }
