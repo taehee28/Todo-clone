@@ -1,5 +1,6 @@
 package com.thk.todo_clone.ui.screens.list
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -8,6 +9,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +26,7 @@ fun ListScreen(
 ) {
     val searchAppBarState by sharedViewModel.searchAppBarState
     val searchTextState by sharedViewModel.searchTextState
+    val tasks by sharedViewModel.tasks.collectAsState()
 
     Scaffold(
         topBar = {
@@ -37,7 +40,11 @@ fun ListScreen(
         floatingActionButton = { ListFab(onFabClicked = navigateToTaskScreen) },
         content = { paddingValues ->
             ListContent(
-                modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding())
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = paddingValues.calculateBottomPadding()),
+                tasks = tasks,
+                navigateToTaskScreen = navigateToTaskScreen
             )
         }
     )
