@@ -21,22 +21,28 @@ import com.thk.data.models.ToDoTask
 import com.thk.todo_clone.ui.theme.TodoTheme
 import com.thk.todo_clone.ui.theme.taskItemBackgroundColor
 import com.thk.todo_clone.ui.theme.taskItemTextColor
+import com.thk.todo_clone.util.RequestState
 import com.thk.todo_clone.util.color
 
 @Composable
 fun ListContent(
     modifier: Modifier = Modifier,
-    tasks: List<ToDoTask>,
+    tasks: RequestState<List<ToDoTask>>,
     navigateToTaskScreen: (taskId: Int) -> Unit
 ) {
-    if (tasks.isEmpty()) {
-        EmptyContent()
-    } else {
-        TaskList(
-            tasks = tasks,
-            navigateToTaskScreen = navigateToTaskScreen,
-            modifier = modifier
-        )
+
+    when (tasks) {
+        is RequestState.Success -> {
+            if (tasks.data.isEmpty()) {
+                EmptyContent()
+            } else {
+                TaskList(
+                    tasks = tasks.data,
+                    navigateToTaskScreen = navigateToTaskScreen,
+                    modifier = modifier
+                )
+            }
+        }
     }
 
 }
