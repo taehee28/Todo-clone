@@ -1,5 +1,6 @@
 package com.thk.todo_clone.navigation.destinations
 
+import android.util.Log
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
@@ -20,7 +21,8 @@ fun NavGraphBuilder.taskComposable(
         arguments = listOf(navArgument(Constants.ARG_KEY_TASK) {
             type = NavType.IntType
         })
-    ) {
-
+    ) { navBackStackEntry ->
+        val taskId = navBackStackEntry.arguments!!.getInt(Constants.ARG_KEY_TASK)
+        Log.d("taskComposable", "taskComposable: taskId = $taskId")
     }
 }
