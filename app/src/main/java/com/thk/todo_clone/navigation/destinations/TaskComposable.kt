@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.thk.data.util.Constants
 import com.thk.todo_clone.ui.screens.task.TaskScreen
+import com.thk.todo_clone.ui.viewmodel.SharedViewModel
 import com.thk.todo_clone.util.Action
 
 /**
@@ -15,7 +16,8 @@ import com.thk.todo_clone.util.Action
  * @param navigateToListScreen task 화면에서 list 화면으로 이동할 수 있게 해주는 lambda
  */
 fun NavGraphBuilder.taskComposable(
-    navigateToListScreen: (Action) -> Unit
+    navigateToListScreen: (Action) -> Unit,
+    sharedViewModel: SharedViewModel
 ) {
     composable(
         route = Constants.SCREEN_TASK,
@@ -24,8 +26,11 @@ fun NavGraphBuilder.taskComposable(
         })
     ) { navBackStackEntry ->
         val taskId = navBackStackEntry.arguments!!.getInt(Constants.ARG_KEY_TASK)
-        Log.d("taskComposable", "taskComposable: taskId = $taskId")
+        sharedViewModel.getSelectedTask(taskId = taskId)
         
-        TaskScreen(navigateToListScreen = navigateToListScreen)
+        TaskScreen(
+            selectedTaskFlow = sharedViewModel.selectedTask,
+            navigateToListScreen = navigateToListScreen
+        )
     }
 }

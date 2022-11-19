@@ -25,6 +25,6 @@ fun SetupNavigation(
     ) {
         // extension을 활용하여 navHost 구현 부분은 깔끔하게 유지
         listComposable(navigateToTaskScreen = screen.task, sharedViewModel = sharedViewModel)
-        taskComposable(navigateToListScreen = screen.list)
+        taskComposable(navigateToListScreen = screen.list, sharedViewModel = sharedViewModel)
     }
 }
