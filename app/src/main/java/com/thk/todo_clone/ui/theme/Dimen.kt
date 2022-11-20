@@ -14,7 +14,8 @@ class Dimensions(
     val largePadding: Dp = 12.dp,
     val priorityIndicatorSize: Dp = 16.dp,
     val topAppBarHeight: Dp = 56.dp,
-    val taskItemElevation: Dp = 2.dp
+    val taskItemElevation: Dp = 2.dp,
+    val priorityDropDownHeight: Dp = 60.dp
 ) {
     fun copy(
         smallPadding: Dp = this.smallPadding,
@@ -22,14 +23,16 @@ class Dimensions(
         largePadding: Dp = this.largePadding,
         priorityIndicatorSize: Dp = this.priorityIndicatorSize,
         topAppBarHeight: Dp = this.topAppBarHeight,
-        taskItemElevation: Dp = this.taskItemElevation
+        taskItemElevation: Dp = this.taskItemElevation,
+        priorityDropDownHeight: Dp = this.priorityDropDownHeight
     ): Dimensions = Dimensions(
         smallPadding = smallPadding,
         mediumPadding = mediumPadding,
         largePadding = largePadding,
         priorityIndicatorSize = priorityIndicatorSize,
         topAppBarHeight = topAppBarHeight,
-        taskItemElevation = taskItemElevation
+        taskItemElevation = taskItemElevation,
+        priorityDropDownHeight = priorityDropDownHeight
     )
 
     override fun equals(other: Any?): Boolean {
@@ -42,6 +45,7 @@ class Dimensions(
         if (priorityIndicatorSize != other.priorityIndicatorSize) return false
         if (topAppBarHeight != other.topAppBarHeight) return false
         if (taskItemElevation != other.taskItemElevation) return false
+        if (priorityDropDownHeight != other.priorityDropDownHeight) return false
 
         return true
     }
@@ -53,6 +57,7 @@ class Dimensions(
         result = 31 * result + priorityIndicatorSize.hashCode()
         result = 31 * result + topAppBarHeight.hashCode()
         result = 31 * result + taskItemElevation.hashCode()
+        result = 31 * result + priorityDropDownHeight.hashCode()
         return result
     }
 
@@ -63,7 +68,8 @@ class Dimensions(
                 "largePadding=$largePadding, " +
                 "priorityIndicatorSize=$priorityIndicatorSize," +
                 "topAppBarHeight=$topAppBarHeight," +
-                "taskItemElevation=$taskItemElevation" +
+                "taskItemElevation=$taskItemElevation," +
+                "priorityDropDownHeight=$priorityDropDownHeight" +
                 ")"
     }
 }
