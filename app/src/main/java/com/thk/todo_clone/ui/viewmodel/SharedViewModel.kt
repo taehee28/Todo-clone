@@ -2,9 +2,11 @@
 
 package com.thk.todo_clone.ui.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.thk.data.models.Priority
 import com.thk.data.models.ToDoTask
 import com.thk.data.repository.ToDoRepository
 import com.thk.todo_clone.util.RequestState
@@ -39,9 +41,29 @@ class SharedViewModel @Inject constructor(
     val searchAppBarState = mutableStateOf(SearchAppBarState.CLOSED)
     val searchTextState = mutableStateOf("")
 
+    val id = mutableStateOf(0)
+    val title = mutableStateOf("")
+    val description = mutableStateOf("")
+    val priority = mutableStateOf(Priority.LOW)
+
     fun getSelectedTask(taskId: Int) = viewModelScope.launch {
         repository.getSelectedTask(taskId).collectLatest {
+            Log.d("TAG", "getSelectedTask: $it")
             _selectedTask.value = it
+        }
+    }
+
+    fun updateTaskFields(selectedTask: ToDoTask?) {
+        if (selectedTask != null) {
+            id.value = selectedTask.id
+            title.value = selectedTask.title
+            description.value = selectedTask.description
+            priority.value = selectedTask.priority
+        } else {
+            id.value = 0
+            title.value = ""
+            description.value = ""
+            priority.value = Priority.LOW
         }
     }
 }

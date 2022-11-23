@@ -16,6 +16,7 @@ import com.thk.todo_clone.ui.theme.TodoTheme
 
 @Composable
 fun TaskContent(
+    modifier: Modifier = Modifier,
     title: String,
     onTitleChange: (String) -> Unit,
     description: String,
@@ -24,7 +25,7 @@ fun TaskContent(
     onPriorityChange: (Priority) -> Unit
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(all = TodoTheme.dimens.largePadding)
     ) {

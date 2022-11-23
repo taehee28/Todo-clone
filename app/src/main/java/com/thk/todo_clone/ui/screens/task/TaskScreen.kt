@@ -1,19 +1,29 @@
 package com.thk.todo_clone.ui.screens.task
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.thk.data.models.ToDoTask
+import androidx.compose.ui.Modifier
+import com.thk.todo_clone.ui.viewmodel.SharedViewModel
 import com.thk.todo_clone.util.Action
-import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun TaskScreen(
-    selectedTaskFlow: StateFlow<ToDoTask?>,
+    sharedViewModel: SharedViewModel,
     navigateToListScreen: (Action) -> Unit
 ) {
-    val selectedTask by selectedTaskFlow.collectAsState()
+    val selectedTask by sharedViewModel.selectedTask.collectAsState()
+
+    LaunchedEffect(key1 = selectedTask) {
+        sharedViewModel.updateTaskFields(selectedTask)
+    }
+
+    val title by sharedViewModel.title
+    val description by sharedViewModel.description
+    val priority by sharedViewModel.priority
 
     Scaffold(
         topBar = {
@@ -22,6 +32,22 @@ fun TaskScreen(
                 navigateToListScreen = navigateToListScreen
             )
         },
-        content = { it.toString() }
+        content = { paddingValues ->
+            TaskContent(
+                modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding()),
+                title = title,
+                onTitleChange = {
+                    sharedViewModel.title.value = it
+                },
+                description = description,
+                onDescriptionChange = {
+                    sharedViewModel.description.value = it
+                },
+                priority = priority,
+                onPriorityChange = {
+                    sharedViewModel.priority.value = it
+                }
+            )
+        }
     )
 }

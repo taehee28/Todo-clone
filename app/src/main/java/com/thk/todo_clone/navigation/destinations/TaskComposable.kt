@@ -1,6 +1,9 @@
 package com.thk.todo_clone.navigation.destinations
 
 import android.util.Log
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
@@ -27,9 +30,9 @@ fun NavGraphBuilder.taskComposable(
     ) { navBackStackEntry ->
         val taskId = navBackStackEntry.arguments!!.getInt(Constants.ARG_KEY_TASK)
         sharedViewModel.getSelectedTask(taskId = taskId)
-        
+
         TaskScreen(
-            selectedTaskFlow = sharedViewModel.selectedTask,
+            sharedViewModel = sharedViewModel,
             navigateToListScreen = navigateToListScreen
         )
     }
