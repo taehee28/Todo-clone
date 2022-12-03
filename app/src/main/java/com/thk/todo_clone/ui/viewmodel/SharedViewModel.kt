@@ -9,9 +9,11 @@ import androidx.lifecycle.viewModelScope
 import com.thk.data.models.Priority
 import com.thk.data.models.ToDoTask
 import com.thk.data.repository.ToDoRepository
+import com.thk.todo_clone.util.Action
 import com.thk.todo_clone.util.RequestState
 import com.thk.todo_clone.util.SearchAppBarState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -74,5 +76,21 @@ class SharedViewModel @Inject constructor(
         if (value.length <= 20) {
             title.value = value
         }
+    }
+
+    fun handleDatabaseActions(action: Action) {
+        when (action) {
+            Action.ADD -> addTask()
+        }
+    }
+
+    private fun addTask() = viewModelScope.launch(Dispatchers.IO) {
+        val task = ToDoTask(
+            title = title.value,
+            description = description.value,
+            priority = priority.value
+        )
+
+        repository.addTask(task)
     }
 }
