@@ -66,4 +66,13 @@ class SharedViewModel @Inject constructor(
             priority.value = Priority.LOW
         }
     }
+
+    fun validateFields(): Boolean =
+        title.value.isNotBlank() and description.value.isNotBlank()
+
+    fun updateTitle(value: String) {
+        if (value.length <= 20) {
+            title.value = value
+        }
+    }
 }
