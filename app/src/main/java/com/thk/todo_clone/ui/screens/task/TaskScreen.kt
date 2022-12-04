@@ -19,10 +19,6 @@ fun TaskScreen(
 ) {
     val selectedTask by sharedViewModel.selectedTask.collectAsState()
 
-    LaunchedEffect(key1 = selectedTask) {
-        sharedViewModel.updateTaskFields(selectedTask)
-    }
-
     val title by sharedViewModel.title
     val description by sharedViewModel.description
     val priority by sharedViewModel.priority

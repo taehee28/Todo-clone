@@ -82,7 +82,7 @@ class SharedViewModel @Inject constructor(
 
     fun handleDatabaseActions(action: Action) {
         when (action) {
-            Action.ADD -> addTask()
+            Action.ADD, Action.UNDO -> addTask()
             Action.UPDATE -> updateTask()
             Action.DELETE -> deleteTask()
         }
