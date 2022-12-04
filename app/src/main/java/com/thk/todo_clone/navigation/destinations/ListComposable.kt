@@ -1,5 +1,6 @@
 package com.thk.todo_clone.navigation.destinations
 
+import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -28,7 +29,8 @@ fun NavGraphBuilder.listComposable(
         val action = navBackStackEntry.arguments?.getString(Constants.ARG_KEY_LIST).toAction()
 
         LaunchedEffect(key1 = action) {
-            sharedViewModel.handleDatabaseActions(action)
+            Log.d("TAG", "listComposable: update action = $action <<<<<<")
+            sharedViewModel.action.value = action
         }
 
         ListScreen(

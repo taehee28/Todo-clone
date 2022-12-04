@@ -48,6 +48,8 @@ class SharedViewModel @Inject constructor(
     val description = mutableStateOf("")
     val priority = mutableStateOf(Priority.LOW)
 
+    val action = mutableStateOf(Action.NO_ACTION)
+
     fun getSelectedTask(taskId: Int) = viewModelScope.launch {
         repository.getSelectedTask(taskId).collectLatest {
             Log.d("TAG", "getSelectedTask: $it")
