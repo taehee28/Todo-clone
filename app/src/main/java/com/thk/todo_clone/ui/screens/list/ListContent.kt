@@ -22,29 +22,48 @@ import com.thk.todo_clone.ui.theme.TodoTheme
 import com.thk.todo_clone.ui.theme.taskItemBackgroundColor
 import com.thk.todo_clone.ui.theme.taskItemTextColor
 import com.thk.todo_clone.util.RequestState
+import com.thk.todo_clone.util.SearchAppBarState
 import com.thk.todo_clone.util.color
 
 @Composable
 fun ListContent(
     modifier: Modifier = Modifier,
-    tasks: RequestState<List<ToDoTask>>,
+    allTasks: RequestState<List<ToDoTask>>,
+    searchedTasks: RequestState<List<ToDoTask>>,
+    searchAppBarState: SearchAppBarState,
     navigateToTaskScreen: (taskId: Int) -> Unit
 ) {
 
-    when (tasks) {
-        is RequestState.Success -> {
-            if (tasks.data.isEmpty()) {
-                EmptyContent()
-            } else {
-                TaskList(
-                    tasks = tasks.data,
-                    navigateToTaskScreen = navigateToTaskScreen,
-                    modifier = modifier
-                )
-            }
-        }
+    val tasks = if (searchAppBarState == SearchAppBarState.TRIGGERED) {
+        searchedTasks
+    } else {
+        allTasks
     }
 
+    if (tasks is RequestState.Success) {
+        HandleListContent(
+            tasks = tasks.data,
+            navigateToTaskScreen = navigateToTaskScreen,
+            modifier = modifier
+        )
+    }
+}
+
+@Composable
+fun HandleListContent(
+    tasks: List<ToDoTask>,
+    navigateToTaskScreen: (taskId: Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    if (tasks.isEmpty()) {
+        EmptyContent()
+    } else {
+        TaskList(
+            tasks = tasks,
+            navigateToTaskScreen = navigateToTaskScreen,
+            modifier = modifier
+        )
+    }
 }
 
 @Composable

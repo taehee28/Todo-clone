@@ -34,7 +34,8 @@ fun ListAppBar(
     searchAppBarState: SearchAppBarState,
     setAppBarState: (SearchAppBarState) -> Unit,
     searchTextState: String,
-    setSearchTextState: (String) -> Unit
+    setSearchTextState: (String) -> Unit,
+    searchDatabase: (String) -> Unit
 ) {
     when (searchAppBarState) {
         SearchAppBarState.CLOSED -> {
@@ -52,7 +53,9 @@ fun ListAppBar(
                     setAppBarState(SearchAppBarState.CLOSED)
                     /*setSearchTextState("")*/
                 },
-                onSearchClicked = {}
+                onSearchClicked = {
+                    searchDatabase(it)
+                }
             )
         }
     }
