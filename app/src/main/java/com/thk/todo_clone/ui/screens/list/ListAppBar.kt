@@ -22,6 +22,7 @@ import com.thk.data.models.Priority
 import com.thk.todo_clone.ui.theme.topAppBarBackgroundColor
 import com.thk.todo_clone.ui.theme.topAppBarContentColor
 import com.thk.todo_clone.R
+import com.thk.todo_clone.ui.components.DisplayAlertDialog
 import com.thk.todo_clone.ui.components.PriorityItem
 import com.thk.todo_clone.ui.theme.TodoTheme
 import com.thk.todo_clone.ui.theme.Typography
@@ -105,9 +106,19 @@ private fun ListAppbarActions(
     onSortClicked: (Priority) -> Unit,
     onDeleteAllClicked: () -> Unit
 ) {
+    var openDialog by remember { mutableStateOf(false) }
+    
+    DisplayAlertDialog(
+        title = stringResource(id = R.string.delete_all_tasks),
+        message = stringResource(id = R.string.delete_all_tasks_confirmation),
+        openDialog = openDialog,
+        onCloseListener = { openDialog = false },
+        onYesClicked = { onDeleteAllClicked() }
+    )
+    
     SearchAction(onSearchClicked = onSearchClicked)
     SortAction(onSortClicked = onSortClicked)
-    DeleteAllAction(onDeleteAllClicked = onDeleteAllClicked)
+    DeleteAllAction(onDeleteAllClicked = { openDialog = true })
 }
 
 @Composable
