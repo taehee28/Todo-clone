@@ -46,7 +46,8 @@ fun ListScreen(
                 setAppBarState = { sharedViewModel.searchAppBarState.value = it },
                 searchTextState = searchTextState,
                 setSearchTextState = { sharedViewModel.searchTextState.value = it },
-                searchDatabase = sharedViewModel::searchDatabase
+                searchDatabase = sharedViewModel::searchDatabase,
+                setAction = { sharedViewModel.action.value = it }
             )
         },
         floatingActionButton = { ListFab(onFabClicked = navigateToTaskScreen) },
@@ -94,7 +95,7 @@ fun DisplaySnackBar(
         if (action != Action.NO_ACTION) {
             scope.launch {
                 val snackBarResult = scaffoldState.snackbarHostState.showSnackbar(
-                    message = "${action.name}: $taskTitle",
+                    message = setMessage(action, taskTitle),
                     actionLabel = if (action == Action.DELETE) "UNDO" else "OK"
                 )
 
@@ -106,6 +107,14 @@ fun DisplaySnackBar(
             }
         }
     }
+}
+
+private fun setMessage(
+    action: Action,
+    taskTitle: String
+): String = when(action) {
+    Action.DELETE_ALL -> "All Tasks Removed."
+    else -> "${action.name}: $taskTitle"
 }
 
 private fun undoDeleteTask(
