@@ -25,6 +25,9 @@ fun ListScreen(
     val allTasks by sharedViewModel.tasks.collectAsState()
     val searchedTasks by sharedViewModel.searchedTask.collectAsState()
     val action by sharedViewModel.action
+    val sortState by sharedViewModel.sortState.collectAsState()
+    val lowPriorityTasks by sharedViewModel.lowPriorityTasks.collectAsState()
+    val highPriorityTasks by sharedViewModel.highPriorityTasks.collectAsState()
 
     val scaffoldState = rememberScaffoldState()
 
@@ -47,7 +50,8 @@ fun ListScreen(
                 searchTextState = searchTextState,
                 setSearchTextState = { sharedViewModel.searchTextState.value = it },
                 searchDatabase = sharedViewModel::searchDatabase,
-                setAction = { sharedViewModel.action.value = it }
+                setAction = { sharedViewModel.action.value = it },
+                persistSortState = sharedViewModel::persistSortState
             )
         },
         floatingActionButton = { ListFab(onFabClicked = navigateToTaskScreen) },
@@ -58,6 +62,9 @@ fun ListScreen(
                     .padding(bottom = paddingValues.calculateBottomPadding()),
                 allTasks = allTasks,
                 searchedTasks = searchedTasks,
+                lowPriorityTasks = lowPriorityTasks,
+                highPriorityTasks = highPriorityTasks,
+                sortState = sortState,
                 searchAppBarState = searchAppBarState,
                 navigateToTaskScreen = navigateToTaskScreen
             )

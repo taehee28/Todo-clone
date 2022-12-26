@@ -37,13 +37,14 @@ fun ListAppBar(
     searchTextState: String,
     setSearchTextState: (String) -> Unit,
     searchDatabase: (String) -> Unit,
-    setAction: (Action) -> Unit
+    setAction: (Action) -> Unit,
+    persistSortState: (Priority) -> Unit
 ) {
     when (searchAppBarState) {
         SearchAppBarState.CLOSED -> {
             DefaultListAppBar(
                 onSearchClicked = { setAppBarState(SearchAppBarState.OPENED) },
-                onSortClicked = {},
+                onSortClicked = { persistSortState(it) },
                 onDeleteAllClicked = {
                     setAction(Action.DELETE_ALL)
                 }

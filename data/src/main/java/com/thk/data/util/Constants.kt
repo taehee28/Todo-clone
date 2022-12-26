@@ -9,4 +9,7 @@ object Constants {
 
     const val ARG_KEY_LIST = "action"
     const val ARG_KEY_TASK = "taskId"
+
+    const val PREFERENCE_NAME = "todo_preferences"
+    const val PREFERENCE_KEY = "sort_state"
 }
