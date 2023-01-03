@@ -16,7 +16,7 @@ val DarkGray = Color(0xFF141414)
 val LowPriorityColor = Color(0xFF00C980)
 val MediumPriorityColor = Color(0xFFFFC114)
 val HighPriorityColor = Color(0xFFFF4646)
-val NonePriorityColor = Color(0xFFFFFFFF)
+val NonePriorityColor = MediumGray
 
 /*
 * MaterialTheme.colors로 접근할 수 있는 커스텀 변수 생성
