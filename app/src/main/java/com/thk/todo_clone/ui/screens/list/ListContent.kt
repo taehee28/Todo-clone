@@ -1,9 +1,14 @@
-@file:OptIn(ExperimentalMaterialApi::class)
+@file:OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 
 package com.thk.todo_clone.ui.screens.list
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,8 +16,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -130,18 +134,32 @@ private fun TaskList(
 
             val degrees by animateFloatAsState(targetValue = if (dismissState.targetValue == DismissValue.Default) 0f else -45f)
 
-            SwipeToDismiss(
-                state = dismissState,
-                directions = setOf(DismissDirection.EndToStart),
-                dismissThresholds = { FractionalThreshold(fraction = 0.2f) },
-                background = { RedBackGround(degrees = degrees) }
-            ) {
-                TaskItem(
-                    toDoTask = task,
-                    navigateToTaskScreen = navigateToTaskScreen
-                )
+            var itemAppeared by remember { mutableStateOf(false) }
+            LaunchedEffect(key1 = true) {
+                itemAppeared = true
             }
 
+            AnimatedVisibility(
+                visible = itemAppeared,
+                enter = expandVertically(
+                    animationSpec = tween(
+                        durationMillis = 300
+                    )
+                ),
+                modifier = Modifier.animateItemPlacement()
+            ) {
+                SwipeToDismiss(
+                    state = dismissState,
+                    directions = setOf(DismissDirection.EndToStart),
+                    dismissThresholds = { FractionalThreshold(fraction = 0.2f) },
+                    background = { RedBackGround(degrees = degrees) }
+                ) {
+                    TaskItem(
+                        toDoTask = task,
+                        navigateToTaskScreen = navigateToTaskScreen
+                    )
+                }
+            }
         }
     }
 }
@@ -161,6 +179,14 @@ fun RedBackGround(degrees: Float) {
             contentDescription = stringResource(id = R.string.delete_icon),
             tint = Color.White
         )
+    }
+}
+
+@Preview
+@Composable
+fun RedBackgroundPreview() {
+    Column(modifier = Modifier.height(100.dp)) {
+        RedBackGround(degrees = 0f)
     }
 }
 
