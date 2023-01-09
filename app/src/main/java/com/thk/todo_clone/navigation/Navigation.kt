@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.thk.data.util.Constants
 import com.thk.todo_clone.navigation.destinations.listComposable
+import com.thk.todo_clone.navigation.destinations.splashComposable
 import com.thk.todo_clone.navigation.destinations.taskComposable
 import com.thk.todo_clone.ui.viewmodel.SharedViewModel
 
@@ -21,10 +22,11 @@ fun SetupNavigation(
     
     NavHost(
         navController = navController,
-        startDestination = Constants.SCREEN_LIST
+        startDestination = Constants.SCREEN_SPLASH
     ) {
         // extension을 활용하여 navHost 구현 부분은 깔끔하게 유지
-        listComposable(navigateToTaskScreen = screen.task, sharedViewModel = sharedViewModel)
-        taskComposable(navigateToListScreen = screen.list, sharedViewModel = sharedViewModel)
+        splashComposable(navigateToListScreen = screen.splash)
+        listComposable(navigateToTaskScreen = screen.list, sharedViewModel = sharedViewModel)
+        taskComposable(navigateToListScreen = screen.task, sharedViewModel = sharedViewModel)
     }
 }

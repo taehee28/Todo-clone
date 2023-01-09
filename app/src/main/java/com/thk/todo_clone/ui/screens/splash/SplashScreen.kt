@@ -1,4 +1,4 @@
-package com.thk.todo_clone.ui.screens
+package com.thk.todo_clone.ui.screens.splash
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.window.SplashScreen
@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,9 +23,17 @@ import androidx.compose.ui.unit.dp
 import com.thk.todo_clone.R
 import com.thk.todo_clone.ui.theme.TodocloneTheme
 import com.thk.todo_clone.ui.theme.splashScreenBackground
+import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(
+    navigateToListScreen: () -> Unit
+) {
+    LaunchedEffect(key1 = Unit) {
+        delay(3000)
+        navigateToListScreen()
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -43,13 +52,13 @@ fun SplashScreen() {
 @Preview
 @Composable
 fun SplashScreenPreview() {
-    SplashScreen()
+    SplashScreen({})
 }
 
 @Preview
 @Composable
 fun SplashScreenPreview2() {
     TodocloneTheme(darkTheme = true) {
-        SplashScreen()
+        SplashScreen({})
     }
 }
