@@ -1,11 +1,15 @@
+@file:OptIn(ExperimentalAnimationApi::class)
+
 package com.thk.todo_clone
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.thk.todo_clone.navigation.SetupNavigation
 import com.thk.todo_clone.ui.theme.TodocloneTheme
 import com.thk.todo_clone.ui.viewmodel.SharedViewModel
@@ -21,7 +25,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TodocloneTheme {
-                navController = rememberNavController()
+                navController = rememberAnimatedNavController()
                 SetupNavigation(
                     navController = navController,
                     sharedViewModel = viewModel

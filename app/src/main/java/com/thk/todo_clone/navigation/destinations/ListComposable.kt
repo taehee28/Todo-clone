@@ -1,10 +1,13 @@
+@file:OptIn(ExperimentalAnimationApi::class)
+
 package com.thk.todo_clone.navigation.destinations
 
 import android.util.Log
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
-import androidx.navigation.compose.composable
+import com.google.accompanist.navigation.animation.composable
 import androidx.navigation.navArgument
 import com.thk.data.util.Constants
 import com.thk.todo_clone.ui.screens.list.ListScreen

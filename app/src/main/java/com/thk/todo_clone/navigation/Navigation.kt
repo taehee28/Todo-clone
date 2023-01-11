@@ -1,9 +1,13 @@
+@file:OptIn(ExperimentalAnimationApi::class)
+
 package com.thk.todo_clone.navigation
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.thk.data.util.Constants
 import com.thk.todo_clone.navigation.destinations.listComposable
 import com.thk.todo_clone.navigation.destinations.splashComposable
@@ -20,7 +24,7 @@ fun SetupNavigation(
         Screens(navController)
     }
     
-    NavHost(
+    AnimatedNavHost(
         navController = navController,
         startDestination = Constants.SCREEN_SPLASH
     ) {
