@@ -28,7 +28,6 @@ import com.thk.todo_clone.ui.theme.TodoTheme
 import com.thk.todo_clone.ui.theme.Typography
 import com.thk.todo_clone.util.Action
 import com.thk.todo_clone.util.SearchAppBarState
-import com.thk.todo_clone.util.TrailingIconState
 
 @Composable
 fun ListAppBar(
@@ -218,8 +217,6 @@ fun SearchAppBar(
     onCloseClicked: () -> Unit,
     onSearchClicked: (String) -> Unit
 ) {
-    var trailingIconState by remember { mutableStateOf(TrailingIconState.READY_TO_DELETE) }
-
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -258,19 +255,10 @@ fun SearchAppBar(
             trailingIcon = {
                 IconButton(
                     onClick = {
-                        when (trailingIconState) {
-                            TrailingIconState.READY_TO_DELETE -> {
-                                onTextChange("")
-                                trailingIconState = TrailingIconState.READY_TO_CLOSE
-                            }
-                            TrailingIconState.READY_TO_CLOSE -> {
-                                if (text.isNotBlank()) {
-                                    onTextChange("")
-                                } else {
-                                    onCloseClicked()
-                                    trailingIconState = TrailingIconState.READY_TO_DELETE
-                                }
-                            }
+                        if (text.isNotEmpty()) {
+                            onTextChange("")
+                        } else {
+                            onCloseClicked
                         }
                     }
                 ) {
