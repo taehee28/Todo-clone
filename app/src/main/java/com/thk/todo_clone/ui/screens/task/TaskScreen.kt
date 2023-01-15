@@ -3,6 +3,7 @@ package com.thk.todo_clone.ui.screens.task
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.OnBackPressedDispatcher
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
@@ -25,7 +26,10 @@ fun TaskScreen(
 
     val context = LocalContext.current
 
-    BackHandler(onBackPressed = { navigateToListScreen(Action.NO_ACTION) })
+    /*BackHandler(onBackPressed = { navigateToListScreen(Action.NO_ACTION) })*/
+    
+    // 공식적으로 제공하는 Back 버튼 Handler
+    BackHandler { navigateToListScreen(Action.NO_ACTION) }
 
     Scaffold(
         topBar = {
@@ -69,6 +73,7 @@ fun TaskScreen(
     )
 }
 
+/*
 @Composable
 fun BackHandler(
     backDispatcher: OnBackPressedDispatcher? = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher,
@@ -95,3 +100,4 @@ fun BackHandler(
         onDispose { backCallback.remove() }
     }
 }
+*/
