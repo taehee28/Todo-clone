@@ -31,9 +31,14 @@ fun ListScreen(
 
     val scaffoldState = rememberScaffoldState()
 
+    LaunchedEffect(key1 = action) {
+        sharedViewModel.handleDatabaseActions(action)
+    }
+
+
     DisplaySnackBar(
         scaffoldState = scaffoldState,
-        handleDatabaseActions = { sharedViewModel.handleDatabaseActions(action) },
+        onComplete = { sharedViewModel.action.value = it },
         onUndoClicked = {
             sharedViewModel.action.value = it
         },
@@ -93,13 +98,11 @@ private fun ListFab(
 @Composable
 fun DisplaySnackBar(
     scaffoldState: ScaffoldState,
-    handleDatabaseActions: () -> Unit,
+    onComplete: (Action) -> Unit,
     onUndoClicked: (Action) -> Unit,
     taskTitle: String,
     action: Action
 ) {
-    handleDatabaseActions()
-
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = action) {
@@ -116,6 +119,8 @@ fun DisplaySnackBar(
                     onUndoClicked = onUndoClicked
                 )
             }
+
+            onComplete(Action.NO_ACTION)
         }
     }
 }

@@ -32,7 +32,6 @@ fun NavGraphBuilder.listComposable(
         val action = navBackStackEntry.arguments?.getString(Constants.ARG_KEY_LIST).toAction()
 
         LaunchedEffect(key1 = action) {
-            Log.d("TAG", "listComposable: update action = $action <<<<<<")
             sharedViewModel.action.value = action
         }
 
