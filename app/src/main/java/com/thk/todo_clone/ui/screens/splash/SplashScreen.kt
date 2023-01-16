@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.thk.todo_clone.R
 import com.thk.todo_clone.ui.theme.TodocloneTheme
@@ -45,6 +46,14 @@ fun SplashScreen(
         navigateToListScreen()
     }
 
+    Splash(offsetState = offsetState, alphaState = alphaState)
+}
+
+@Composable
+fun Splash(
+    offsetState: Dp,
+    alphaState: Float
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -66,13 +75,13 @@ fun SplashScreen(
 @Preview
 @Composable
 fun SplashScreenPreview() {
-    SplashScreen({})
+    Splash(0.dp, 1f)
 }
 
 @Preview
 @Composable
 fun SplashScreenPreview2() {
     TodocloneTheme(darkTheme = true) {
-        SplashScreen({})
+        Splash(0.dp, 1f)
     }
 }
