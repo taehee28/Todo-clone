@@ -82,6 +82,9 @@ dependencies {
     implementation("com.google.dagger:hilt-android:$hilt_version")
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     kapt 'androidx.hilt:hilt-compiler:1.0.0'
+
+    // Splash
+    implementation "androidx.core:core-splashscreen:1.0.0"
 }
 
 // Allow references to generated code

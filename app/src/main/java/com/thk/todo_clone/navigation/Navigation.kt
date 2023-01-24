@@ -26,10 +26,10 @@ fun SetupNavigation(
     
     AnimatedNavHost(
         navController = navController,
-        startDestination = Constants.SCREEN_SPLASH
+        startDestination = Constants.SCREEN_LIST
     ) {
         // extension을 활용하여 navHost 구현 부분은 깔끔하게 유지
-        splashComposable(navigateToListScreen = screen.splash)
+        /*splashComposable(navigateToListScreen = screen.splash)*/
         listComposable(navigateToTaskScreen = screen.list, sharedViewModel = sharedViewModel)
         taskComposable(navigateToListScreen = screen.task, sharedViewModel = sharedViewModel)
     }

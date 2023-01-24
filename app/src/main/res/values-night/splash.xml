@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.App.MySplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/black</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_check_circle</item>
+        <item name="splashScreenIconSize">100dp</item>
+        <item name="postSplashScreenTheme">@style/Theme.Todoclone</item>
+    </style>
+</resources>
