@@ -34,10 +34,39 @@ import com.thk.todo_clone.ui.theme.HighPriorityColor
 import com.thk.todo_clone.ui.theme.TodoTheme
 import com.thk.todo_clone.ui.theme.taskItemBackgroundColor
 import com.thk.todo_clone.ui.theme.taskItemTextColor
-import com.thk.todo_clone.util.Action
-import com.thk.todo_clone.util.RequestState
-import com.thk.todo_clone.util.SearchAppBarState
-import com.thk.todo_clone.util.color
+import com.thk.todo_clone.util.*
+
+@Composable
+fun ListContent(
+    taskList: RequestState<List<ToDoTask>>,
+    searchedTaskList: RequestState<List<ToDoTask>>,
+    searchAppBarState: SearchAppBarState,
+    onSwipeToDelete: (UIEvent) -> Unit,
+    navigateToTaskScreen: (taskId: Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    if (searchAppBarState == SearchAppBarState.TRIGGERED) {
+        // 검색 모드
+        if (searchedTaskList is RequestState.Success) {
+            HandleListContent(
+                tasks = searchedTaskList.data,
+                onSwipeToDelete = onSwipeToDelete,
+                navigateToTaskScreen = navigateToTaskScreen,
+                modifier = modifier
+            )
+        }
+    } else {
+        // 전체 목록 모드
+        if (taskList is RequestState.Success) {
+            HandleListContent(
+                tasks = taskList.data,
+                onSwipeToDelete = onSwipeToDelete,
+                navigateToTaskScreen = navigateToTaskScreen,
+                modifier = modifier
+            )
+        }
+    }
+}
 
 @Composable
 fun ListContent(
@@ -94,6 +123,25 @@ fun ListContent(
 }
 
 @Composable
+private fun HandleListContent(      // new
+    tasks: List<ToDoTask>,
+    onSwipeToDelete: (UIEvent) -> Unit,
+    navigateToTaskScreen: (taskId: Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    if (tasks.isEmpty()) {
+        EmptyContent()
+    } else {
+        TaskList(
+            tasks = tasks,
+            onSwipeToDelete = onSwipeToDelete,
+            navigateToTaskScreen = navigateToTaskScreen,
+            modifier = modifier
+        )
+    }
+}
+
+@Composable
 fun HandleListContent(
     tasks: List<ToDoTask>,
     onSwipeToDelete: (Action, ToDoTask) -> Unit,
@@ -109,6 +157,58 @@ fun HandleListContent(
             navigateToTaskScreen = navigateToTaskScreen,
             modifier = modifier
         )
+    }
+}
+
+@Composable
+private fun TaskList(   // new
+    modifier: Modifier = Modifier,
+    tasks: List<ToDoTask>,
+    onSwipeToDelete: (UIEvent) -> Unit,
+    navigateToTaskScreen: (taskId: Int) -> Unit
+) {
+    LazyColumn(modifier = modifier) {
+        items(
+            items = tasks,
+            key = { it.id }
+        ) { task ->
+            val dismissState = rememberDismissState()
+            val dismissDirection = dismissState.dismissDirection
+            val isDismissed = dismissState.isDismissed(DismissDirection.EndToStart)
+
+            if (isDismissed && dismissDirection == DismissDirection.EndToStart) {
+                onSwipeToDelete(UIEvent.SwipeToDeleteTask(task))
+            }
+
+            val degrees by animateFloatAsState(targetValue = if (dismissState.targetValue == DismissValue.Default) 0f else -45f)
+
+            var itemAppeared by remember { mutableStateOf(false) }
+            LaunchedEffect(key1 = true) {
+                itemAppeared = true
+            }
+
+            AnimatedVisibility(
+                visible = itemAppeared,
+                enter = expandVertically(
+                    animationSpec = tween(
+                        durationMillis = 300
+                    )
+                ),
+                modifier = Modifier.animateItemPlacement()
+            ) {
+                SwipeToDismiss(
+                    state = dismissState,
+                    directions = setOf(DismissDirection.EndToStart),
+                    dismissThresholds = { FractionalThreshold(fraction = 0.2f) },
+                    background = { RedBackGround(degrees = degrees) }
+                ) {
+                    TaskItem(
+                        toDoTask = task,
+                        navigateToTaskScreen = navigateToTaskScreen
+                    )
+                }
+            }
+        }
     }
 }
 

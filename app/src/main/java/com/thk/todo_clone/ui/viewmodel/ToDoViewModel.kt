@@ -43,7 +43,7 @@ class ToDoViewModel @Inject constructor(
     val searchAppBarState: State<SearchAppBarState>
         get() = _searchAppBarState
 
-    // TODO: Composable에 전달 할 SanckBar와 Toast 표시를 나타내는 이벤트 변수 정의 
+    // TODO: Composable에 전달 할 SanckBar와 Toast 표시를 나타내는 이벤트 변수 정의
 
     fun onEvent(event: UIEvent) {
         when (event) {
@@ -71,6 +71,10 @@ class ToDoViewModel @Inject constructor(
             }
             is UIEvent.SortChanged -> {
                 // TODO: repository에 sort 저장하는 함수 만들어야 함
+            }
+            is UIEvent.SwipeToDeleteTask -> {
+                _taskState.value = event.task.toToDoTaskState()
+                deleteTask()
             }
             is UIEvent.AddTask -> {
                 addTask()

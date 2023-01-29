@@ -1,6 +1,7 @@
 package com.thk.todo_clone.util
 
 import com.thk.data.models.Priority
+import com.thk.data.models.ToDoTask
 
 sealed class UIEvent {
     data class SelectTask(val id: Int) : UIEvent()
@@ -9,6 +10,7 @@ sealed class UIEvent {
     data class PriorityChanged(val priority: Priority) : UIEvent()
     data class SortChanged(val sort: Priority) : UIEvent()
     data class SearchTasks(val keyword: String) : UIEvent()
+    data class SwipeToDeleteTask(val task: ToDoTask) : UIEvent()
     object AddTask : UIEvent()
     object UpdateTask : UIEvent()
     object DeleteTask : UIEvent()

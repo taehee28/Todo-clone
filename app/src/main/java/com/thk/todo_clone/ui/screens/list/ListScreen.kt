@@ -9,11 +9,70 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import com.thk.data.models.ToDoTask
 import com.thk.todo_clone.R
 import com.thk.todo_clone.ui.theme.fabBackgroundColor
 import com.thk.todo_clone.ui.viewmodel.SharedViewModel
+import com.thk.todo_clone.ui.viewmodel.ToDoViewModel
 import com.thk.todo_clone.util.Action
+import com.thk.todo_clone.util.RequestState
+import com.thk.todo_clone.util.SearchAppBarState
+import com.thk.todo_clone.util.UIEvent
 import kotlinx.coroutines.launch
+
+@Composable
+fun ListScreen(
+    navigateToTaskScreen: (Int) -> Unit,
+    toDoViewModel: ToDoViewModel
+) {
+    val taskList by toDoViewModel.taskList.collectAsState()
+    val searchedTaskList by toDoViewModel.searchedTaskList.collectAsState()
+    val searchAppBarState by toDoViewModel.searchAppBarState
+
+    val scaffoldState = rememberScaffoldState()
+
+    ListScreen(
+        taskList = taskList,
+        searchedTaskList = searchedTaskList,
+        searchAppBarState = searchAppBarState,
+        scaffoldState = scaffoldState,
+        navigateToTaskScreen = navigateToTaskScreen,
+        onEvent = toDoViewModel::onEvent
+    )
+}
+
+@Composable
+private fun ListScreen(
+    taskList: RequestState<List<ToDoTask>>,
+    searchedTaskList: RequestState<List<ToDoTask>>,
+    searchAppBarState: SearchAppBarState,
+    scaffoldState: ScaffoldState,
+    navigateToTaskScreen: (Int) -> Unit,
+    onEvent: (UIEvent) -> Unit
+) {
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
+            ListAppBar(
+                searchAppBarState = searchAppBarState,
+                onEvent = onEvent
+            )
+        },
+        floatingActionButton = { ListFab(onFabClicked = navigateToTaskScreen) },
+        content = { paddingValues ->
+            ListContent(
+                taskList = taskList,
+                searchedTaskList = searchedTaskList,
+                searchAppBarState = searchAppBarState,
+                onSwipeToDelete = onEvent,
+                navigateToTaskScreen = navigateToTaskScreen,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = paddingValues.calculateBottomPadding())
+            )
+        }
+    )
+}
 
 @Composable
 fun ListScreen(

@@ -28,6 +28,29 @@ import com.thk.todo_clone.ui.theme.TodoTheme
 import com.thk.todo_clone.ui.theme.Typography
 import com.thk.todo_clone.util.Action
 import com.thk.todo_clone.util.SearchAppBarState
+import com.thk.todo_clone.util.UIEvent
+
+@Composable
+fun ListAppBar(     // new
+    searchAppBarState: SearchAppBarState,
+    onEvent: (UIEvent) -> Unit
+) {
+    when (searchAppBarState) {
+        SearchAppBarState.CLOSED -> {
+            DefaultListAppBar(
+                onSearchClicked = { onEvent(UIEvent.OpenSearch) },
+                onSortClicked = { onEvent(UIEvent.SortChanged(it)) },
+                onDeleteAllClicked = { onEvent(UIEvent.DeleteAllTasks) }
+            )
+        }
+        else -> {
+            SearchAppBar(
+                onCloseClicked = { onEvent(UIEvent.CloseSearch) },
+                onSearchClicked = { onEvent(UIEvent.SearchTasks(it)) }
+            )
+        }
+    }
+}
 
 @Composable
 fun ListAppBar(
@@ -199,8 +222,24 @@ private fun DeleteAllAction(
     }
 }
 
+
 @Composable
-fun SearchAppBar(
+private fun SearchAppBar(   // new
+    onCloseClicked: () -> Unit,
+    onSearchClicked: (String) -> Unit
+) {
+    val (text, setText) = remember { mutableStateOf("") }
+
+    SearchAppBar(
+        text = text,
+        onTextChange = setText,
+        onCloseClicked = onCloseClicked,
+        onSearchClicked = onSearchClicked
+    )
+}
+
+@Composable
+private fun SearchAppBar(
     text: String,
     onTextChange: (String) -> Unit,
     onCloseClicked: () -> Unit,
@@ -231,7 +270,9 @@ fun SearchAppBar(
             singleLine = true,
             leadingIcon = {
                 IconButton(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        if (text.isNotBlank()) onSearchClicked(text)
+                    },
                     modifier = Modifier.alpha(ContentAlpha.disabled)
                 ) {
                     Icon(
@@ -247,7 +288,7 @@ fun SearchAppBar(
                         if (text.isNotEmpty()) {
                             onTextChange("")
                         } else {
-                            onCloseClicked
+                            onCloseClicked()
                         }
                     }
                 ) {
