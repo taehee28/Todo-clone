@@ -85,6 +85,7 @@ class SharedViewModel @Inject constructor(
         )
 
     fun getSelectedTask(taskId: Int) = viewModelScope.launch {
+        Log.d("TAG", "getSelectedTask: taskId = $taskId")
         toDoRepository.getSelectedTask(taskId).collectLatest {
             Log.d("TAG", "getSelectedTask: $it")
             _selectedTask.value = it

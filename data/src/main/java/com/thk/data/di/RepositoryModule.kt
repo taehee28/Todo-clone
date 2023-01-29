@@ -16,7 +16,11 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 @InstallIn(ViewModelComponent::class)
 object RepositoryModule {
     @Provides
-    fun provideToDoRepository(toDoDao: ToDoDao): ToDoRepository = ToDoRepositoryImpl(toDoDao)
+    fun provideToDoRepository(
+        toDoDao: ToDoDao,
+        dataStoreRepository: DataStoreRepository
+    ): ToDoRepository =
+        ToDoRepositoryImpl(toDoDao, dataStoreRepository)
 
     @Provides
     fun provideDataStoreRepository(@ApplicationContext context: Context): DataStoreRepository = DataStoreRepositoryImpl(context)
