@@ -13,16 +13,61 @@ import com.thk.data.models.Priority
 import com.thk.todo_clone.R
 import com.thk.todo_clone.ui.components.PriorityDropDown
 import com.thk.todo_clone.ui.theme.TodoTheme
+import com.thk.todo_clone.util.UIEvent
 
 @Composable
 fun TaskContent(
-    modifier: Modifier = Modifier,
+    title: String,
+    hasTitleError: Boolean,
+    description: String,
+    hasDescriptionError: Boolean,
+    priority: Priority,
+    onEvent: (UIEvent) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(all = TodoTheme.dimens.largePadding)
+    ) {
+        OutlinedTextField(
+            value = title,
+            onValueChange = {
+                if (it.length <= 20) onEvent(UIEvent.TitleChanged(it))
+            },
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text(text = stringResource(id = R.string.title)) },
+            textStyle = MaterialTheme.typography.body1,
+            singleLine = true,
+            isError = hasTitleError
+        )
+        Spacer(
+            modifier = Modifier.height(TodoTheme.dimens.mediumPadding)
+        )
+        PriorityDropDown(
+            priority = priority,
+            onPrioritySelected = { onEvent(UIEvent.PriorityChanged(it)) }
+        )
+        OutlinedTextField(
+            value = description,
+            onValueChange = { onEvent(UIEvent.DescriptionChanged(it)) },
+            modifier = Modifier.fillMaxSize(),
+            label = { Text(text = stringResource(id = R.string.description)) },
+            textStyle = MaterialTheme.typography.body1,
+            isError = hasDescriptionError
+        )
+    }
+}
+
+@Composable
+fun TaskContent(
     title: String,
     onTitleChange: (String) -> Unit,
     description: String,
     onDescriptionChange: (String) -> Unit,
     priority: Priority,
-    onPriorityChange: (Priority) -> Unit
+    onPriorityChange: (Priority) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier

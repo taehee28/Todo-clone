@@ -1,17 +1,61 @@
 package com.thk.todo_clone.ui.screens.task
 
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.thk.data.models.Priority
 import com.thk.todo_clone.ui.viewmodel.SharedViewModel
+import com.thk.todo_clone.ui.viewmodel.ToDoViewModel
 import com.thk.todo_clone.util.Action
+import com.thk.todo_clone.util.UIEvent
+
+@Composable
+fun TaskScreen(
+    toDoViewModel: ToDoViewModel,
+    navigateToListScreen: (Action) -> Unit
+) {
+    val selectedTask by toDoViewModel.selectedTaskState.collectAsState()
+    val buttonEnabled by remember {
+        derivedStateOf { selectedTask.run { !(hasTitleError||hasDescriptionError) } }
+    }
+
+    Scaffold(
+        topBar = {
+           TaskAppBar(
+               selectedTask = selectedTask,
+               buttonEnabledProvider = { buttonEnabled },
+               onBackClicked = { navigateToListScreen(Action.NO_ACTION) },
+               onAddClicked = {
+                   toDoViewModel.onEvent(UIEvent.AddTask)
+                   navigateToListScreen(Action.NO_ACTION)
+               },
+               onUpdateClicked = {
+                   toDoViewModel.onEvent(UIEvent.UpdateTask)
+                   navigateToListScreen(Action.NO_ACTION)
+               },
+               onDeleteClicked = {
+                   toDoViewModel.onEvent(UIEvent.DeleteTask)
+                   navigateToListScreen(Action.NO_ACTION)
+               }
+           )
+        },
+        content = { paddingValues ->
+            TaskContent(
+                title = selectedTask.title,
+                hasTitleError = selectedTask.hasTitleError,
+                description = selectedTask.description,
+                hasDescriptionError = selectedTask.hasDescriptionError,
+                priority = selectedTask.priority,
+                onEvent = toDoViewModel::onEvent,
+                modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding())
+            )
+        }
+    )
+}
 
 @Composable
 fun TaskScreen(
@@ -27,7 +71,7 @@ fun TaskScreen(
     val context = LocalContext.current
 
     /*BackHandler(onBackPressed = { navigateToListScreen(Action.NO_ACTION) })*/
-    
+
     // 공식적으로 제공하는 Back 버튼 Handler
     BackHandler { navigateToListScreen(Action.NO_ACTION) }
 

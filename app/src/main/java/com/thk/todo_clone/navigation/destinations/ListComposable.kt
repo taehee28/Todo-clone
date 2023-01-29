@@ -15,6 +15,7 @@ import androidx.navigation.navArgument
 import com.thk.data.util.Constants
 import com.thk.todo_clone.ui.screens.list.ListScreen
 import com.thk.todo_clone.ui.viewmodel.SharedViewModel
+import com.thk.todo_clone.ui.viewmodel.ToDoViewModel
 import com.thk.todo_clone.util.Action
 import com.thk.todo_clone.util.toAction
 
@@ -25,7 +26,7 @@ import com.thk.todo_clone.util.toAction
  */
 fun NavGraphBuilder.listComposable(
     navigateToTaskScreen: (Int) -> Unit,
-    sharedViewModel: SharedViewModel
+    toDoViewModel: ToDoViewModel
 ) {
     composable(
         route = Constants.SCREEN_LIST,
@@ -33,19 +34,6 @@ fun NavGraphBuilder.listComposable(
             type = NavType.StringType
         })
     ) { navBackStackEntry ->
-        val action = navBackStackEntry.arguments?.getString(Constants.ARG_KEY_LIST).toAction()
-        var savedAction by rememberSaveable() { mutableStateOf(Action.NO_ACTION) }
-
-        LaunchedEffect(key1 = savedAction) {
-            if (action != savedAction) {
-                savedAction = action
-                sharedViewModel.action.value = action
-            }
-        }
-
-        ListScreen(
-            navigateToTaskScreen = navigateToTaskScreen,
-            sharedViewModel = sharedViewModel
-        )
+        ListScreen(navigateToTaskScreen = navigateToTaskScreen, toDoViewModel = toDoViewModel)
     }
 }

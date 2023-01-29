@@ -18,7 +18,9 @@ fun ToDoTask.toToDoTaskState() = ToDoTaskState(
     id = this.id,
     title = this.title,
     description = this.description,
-    priority = this.priority
+    priority = this.priority,
+    hasTitleError = this.title.isBlank(),
+    hasDescriptionError = this.description.isBlank()
 )
 
 fun ToDoTaskState.toToDoTask() = ToDoTask(

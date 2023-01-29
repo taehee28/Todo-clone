@@ -5,10 +5,10 @@ import com.thk.data.models.Priority
 
 @Stable
 data class ToDoTaskState(
-    val id: Int,
-    val title: String,
-    val description: String,
-    val priority: Priority,
-    val hasTitleError: Boolean = false,
-    val hasDescriptionError: Boolean = false
+    val id: Int = 0,
+    val title: String = "",
+    val description: String = "",
+    val priority: Priority = Priority.LOW,
+    val hasTitleError: Boolean = true,
+    val hasDescriptionError: Boolean = true
 )

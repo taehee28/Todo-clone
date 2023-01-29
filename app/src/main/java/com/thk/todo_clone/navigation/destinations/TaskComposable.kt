@@ -16,7 +16,9 @@ import androidx.navigation.navArgument
 import com.thk.data.util.Constants
 import com.thk.todo_clone.ui.screens.task.TaskScreen
 import com.thk.todo_clone.ui.viewmodel.SharedViewModel
+import com.thk.todo_clone.ui.viewmodel.ToDoViewModel
 import com.thk.todo_clone.util.Action
+import com.thk.todo_clone.util.UIEvent
 
 /**
  * task 화면에 대한 navGraph의 composable 호출을 해당 화면 파일에 모아둠
@@ -25,7 +27,7 @@ import com.thk.todo_clone.util.Action
  */
 fun NavGraphBuilder.taskComposable(
     navigateToListScreen: (Action) -> Unit,
-    sharedViewModel: SharedViewModel
+    toDoViewModel: ToDoViewModel
 ) {
     composable(
         route = Constants.SCREEN_TASK,
@@ -40,21 +42,11 @@ fun NavGraphBuilder.taskComposable(
         }
     ) { navBackStackEntry ->
         val taskId = navBackStackEntry.arguments!!.getInt(Constants.ARG_KEY_TASK)
+
         LaunchedEffect(key1 = taskId) {
-            sharedViewModel.getSelectedTask(taskId = taskId)
+            toDoViewModel.onEvent(UIEvent.SelectTask(taskId))
         }
 
-        val selectedTask by sharedViewModel.selectedTask.collectAsState()
-
-        LaunchedEffect(key1 = selectedTask) {
-            if (selectedTask != null || taskId == -1) {
-                sharedViewModel.updateTaskFields(selectedTask)
-            }
-        }
-
-        TaskScreen(
-            sharedViewModel = sharedViewModel,
-            navigateToListScreen = navigateToListScreen
-        )
+        TaskScreen(toDoViewModel = toDoViewModel, navigateToListScreen = navigateToListScreen)
     }
 }

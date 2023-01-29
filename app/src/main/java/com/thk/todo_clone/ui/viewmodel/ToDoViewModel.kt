@@ -35,9 +35,9 @@ class ToDoViewModel @Inject constructor(
     val searchedTaskList
         get() = _searchedTaskList.asStateFlow()
 
-    private val _taskState = MutableStateFlow<ToDoTaskState?>(null)
-    val taskState
-        get() = _taskState.asStateFlow()
+    private val _selectedTaskState = MutableStateFlow<ToDoTaskState>(ToDoTaskState())
+    val selectedTaskState
+        get() = _selectedTaskState.asStateFlow()
 
     private val _searchAppBarState = mutableStateOf(SearchAppBarState.CLOSED)
     val searchAppBarState: State<SearchAppBarState>
@@ -51,29 +51,31 @@ class ToDoViewModel @Inject constructor(
                 getSelectedTask(event.id)
             }
             is UIEvent.TitleChanged -> {
-                _taskState.update {
-                    it?.copy(
+                _selectedTaskState.update {
+                    it.copy(
                         title = event.title,
                         hasTitleError = event.title.isBlank()
                     )
                 }
             }
             is UIEvent.DescriptionChanged -> {
-                _taskState.update {
-                    it?.copy(
+                _selectedTaskState.update {
+                    it.copy(
                         description = event.description,
                         hasDescriptionError = event.description.isBlank()
                     )
                 }
             }
             is UIEvent.PriorityChanged -> {
-                _taskState.update { it?.copy(priority = event.priority) }
+                _selectedTaskState.update {
+                    it.copy(priority = event.priority)
+                }
             }
             is UIEvent.SortChanged -> {
                 // TODO: repository에 sort 저장하는 함수 만들어야 함
             }
             is UIEvent.SwipeToDeleteTask -> {
-                _taskState.value = event.task.toToDoTaskState()
+                _selectedTaskState.value = event.task.toToDoTaskState()
                 deleteTask()
             }
             is UIEvent.AddTask -> {
@@ -106,13 +108,8 @@ class ToDoViewModel @Inject constructor(
     private fun getSelectedTask(taskId: Int) = viewModelScope.launch {
         toDoRepository.getSelectedTask(taskId).collectLatest {
             // TODO: -1이 오면 null? nullable로 바꾸기
-            _taskState.value = if (it == null) {
-                ToDoTaskState(
-                    id = 0,
-                    title = "",
-                    description = "",
-                    priority = Priority.LOW
-                )
+            _selectedTaskState.value = if (it == null) {
+                ToDoTaskState()
             } else {
                 it.toToDoTaskState()
             }
@@ -120,21 +117,15 @@ class ToDoViewModel @Inject constructor(
     }
 
     private fun addTask() = viewModelScope.launch {
-        _taskState.value?.also {
-            toDoRepository.addTask(it.toToDoTask())
-        }
+        toDoRepository.addTask(_selectedTaskState.value.toToDoTask())
     }
 
     private fun updateTask() = viewModelScope.launch {
-        _taskState.value?.also {
-            toDoRepository.updateTask(it.toToDoTask())
-        }
+        toDoRepository.updateTask(_selectedTaskState.value.toToDoTask())
     }
 
     private fun deleteTask() = viewModelScope.launch {
-        _taskState.value?.also {
-            toDoRepository.deleteTask(it.toToDoTask())
-        }
+        toDoRepository.deleteTask(_selectedTaskState.value.toToDoTask())
     }
 
     private fun deleteAllTasks() = viewModelScope.launch {

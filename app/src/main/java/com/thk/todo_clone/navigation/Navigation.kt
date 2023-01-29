@@ -13,11 +13,12 @@ import com.thk.todo_clone.navigation.destinations.listComposable
 import com.thk.todo_clone.navigation.destinations.splashComposable
 import com.thk.todo_clone.navigation.destinations.taskComposable
 import com.thk.todo_clone.ui.viewmodel.SharedViewModel
+import com.thk.todo_clone.ui.viewmodel.ToDoViewModel
 
 @Composable
 fun SetupNavigation(
     navController: NavHostController,
-    sharedViewModel: SharedViewModel
+    toDoViewModel: ToDoViewModel
 ) {
     // navController가 변경되면 다시 Screens를 생성해서 저장함
     val screen = remember(navController) {
@@ -30,7 +31,7 @@ fun SetupNavigation(
     ) {
         // extension을 활용하여 navHost 구현 부분은 깔끔하게 유지
         /*splashComposable(navigateToListScreen = screen.splash)*/
-        listComposable(navigateToTaskScreen = screen.list, sharedViewModel = sharedViewModel)
-        taskComposable(navigateToListScreen = screen.task, sharedViewModel = sharedViewModel)
+        listComposable(navigateToTaskScreen = screen.list, toDoViewModel = toDoViewModel)
+        taskComposable(navigateToListScreen = screen.task, toDoViewModel = toDoViewModel)
     }
 }
