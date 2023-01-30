@@ -126,15 +126,10 @@ class ToDoViewModel @Inject constructor(
     }
 
     private fun getSelectedTask(taskId: Int) = viewModelScope.launch {
-        toDoRepository.getSelectedTask(taskId).collectLatest {
-            // TODO: -1이 오면 null? nullable로 바꾸기
-            logd(">> collected task = $it")
-            _selectedTaskState.value = if (it == null) {
-                ToDoTaskState()
-            } else {
-                it.toToDoTaskState()
-            }
-        }
+        // collect를 하면 선택한 Task를 삭제했을 때 null이 collect된다 -> undo 불가능
+        // 최초 한개만 collect하고 flow를 닫아서 null이 넘어오지 않게 함
+        val task = toDoRepository.getSelectedTask(taskId).first()
+        _selectedTaskState.value = task?.toToDoTaskState() ?: ToDoTaskState()
     }
 
     private fun addTask() = viewModelScope.launch {

@@ -104,6 +104,7 @@ private fun TaskList(
             val isDismissed = dismissState.isDismissed(DismissDirection.EndToStart)
 
             if (isDismissed && dismissDirection == DismissDirection.EndToStart) {
+                // FIXME: undo할 때마다 여기가 호출됨
                 onSwipeToDelete(UIEvent.SwipeToDeleteTask(task))
             }
 
