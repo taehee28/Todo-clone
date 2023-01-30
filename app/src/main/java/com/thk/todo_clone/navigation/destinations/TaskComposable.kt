@@ -19,6 +19,7 @@ import com.thk.todo_clone.ui.viewmodel.SharedViewModel
 import com.thk.todo_clone.ui.viewmodel.ToDoViewModel
 import com.thk.todo_clone.util.Action
 import com.thk.todo_clone.util.UIEvent
+import com.thk.todo_clone.util.logd
 
 /**
  * task 화면에 대한 navGraph의 composable 호출을 해당 화면 파일에 모아둠
