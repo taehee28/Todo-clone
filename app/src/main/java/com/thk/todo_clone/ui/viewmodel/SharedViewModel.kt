@@ -6,9 +6,9 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.thk.data.datasource.DataStoreSource
 import com.thk.data.models.Priority
 import com.thk.data.models.ToDoTask
-import com.thk.data.repository.DataStoreRepository
 import com.thk.data.repository.ToDoRepository
 import com.thk.todo_clone.util.Action
 import com.thk.todo_clone.util.RequestState
@@ -23,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SharedViewModel @Inject constructor(
     private val toDoRepository: ToDoRepository,
-    private val dataStoreRepository: DataStoreRepository
+    private val dataStoreSource: DataStoreSource
 ) : ViewModel() {
     val tasks = toDoRepository
         .getAllTasks()
@@ -70,7 +70,7 @@ class SharedViewModel @Inject constructor(
 
     val action = mutableStateOf(Action.NO_ACTION)
 
-    val sortState = dataStoreRepository
+    val sortState = dataStoreSource
         .readSortState()
         .mapLatest {
             RequestState.Success(Priority.valueOf(it))
@@ -175,6 +175,6 @@ class SharedViewModel @Inject constructor(
     }
 
     fun persistSortState(priority: Priority) = viewModelScope.launch(Dispatchers.IO) {
-        dataStoreRepository.persistSortState(priority = priority)
+        dataStoreSource.persistSortState(priority = priority)
     }
 }

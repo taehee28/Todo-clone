@@ -1,4 +1,4 @@
-package com.thk.data.repository
+package com.thk.data.datasource
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -12,22 +12,21 @@ import com.thk.data.util.Constants
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = Constants.PREFERENCE_NAME)
 
-interface DataStoreRepository {
+interface DataStoreSource {
     fun readSortState(): Flow<String>
     suspend fun persistSortState(priority: Priority)
 }
 
 @ViewModelScoped
-class DataStoreRepositoryImpl @Inject constructor(
-    private val context: Context
-) : DataStoreRepository {
+class DataStoreSourceImpl @Inject constructor(
+    context: Context
+) : DataStoreSource {
     private object PreferenceKeys {
         val sortKey = stringPreferencesKey(name = Constants.PREFERENCE_KEY)
     }

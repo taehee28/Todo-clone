@@ -3,14 +3,12 @@
 package com.thk.data.repository
 
 import com.thk.data.database.ToDoDao
+import com.thk.data.datasource.DataStoreSource
 import com.thk.data.models.Priority
 import com.thk.data.models.ToDoTask
-import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.mapLatest
 import javax.inject.Inject
 
 interface ToDoRepository {
@@ -28,7 +26,7 @@ interface ToDoRepository {
 
 class ToDoRepositoryImpl @Inject constructor(
     private val toDoDao: ToDoDao,
-    private val dataStoreRepository: DataStoreRepository
+    private val dataStoreRepository: DataStoreSource
 ) : ToDoRepository {
     override fun getAllTasks() = toDoDao.getAllTasks()
 
