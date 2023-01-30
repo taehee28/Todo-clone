@@ -14,6 +14,7 @@ import javax.inject.Inject
 interface ToDoRepository {
     fun getAllTasks(): Flow<List<ToDoTask>>
     fun getSortedTasks(): Flow<List<ToDoTask>>
+    suspend fun changeSort(priority: Priority)
     fun getTasksSortByLowPriority(): Flow<List<ToDoTask>>
     fun getTasksSortByHighPriority(): Flow<List<ToDoTask>>
     fun getSelectedTask(taskId: Int): Flow<ToDoTask>
@@ -26,20 +27,22 @@ interface ToDoRepository {
 
 class ToDoRepositoryImpl @Inject constructor(
     private val toDoDao: ToDoDao,
-    private val dataStoreRepository: DataStoreSource
+    private val dataStoreSource: DataStoreSource
 ) : ToDoRepository {
     override fun getAllTasks() = toDoDao.getAllTasks()
 
     override fun getSortedTasks(): Flow<List<ToDoTask>> =
         toDoDao
             .getAllTasks()
-            .combine(dataStoreRepository.readSortState()) { list, priority ->       // TODO: sortState가 갱신될 때마다 리스트도 갱신되는지??
+            .combine(dataStoreSource.readSortState()) { list, priority ->
                 when (Priority.valueOf(priority)) {
                     Priority.HIGH -> list.sortedBy { it.priority }
                     Priority.LOW -> list.sortedByDescending { it.priority }
                     else -> list
                 }
             }
+
+    override suspend fun changeSort(priority: Priority) = dataStoreSource.persistSortState(priority)
 
     override fun getTasksSortByLowPriority() = toDoDao.sortByLowPriority()
 

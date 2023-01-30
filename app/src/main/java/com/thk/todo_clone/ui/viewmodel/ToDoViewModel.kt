@@ -72,7 +72,9 @@ class ToDoViewModel @Inject constructor(
                 }
             }
             is UIEvent.SortChanged -> {
-                // TODO: repository에 sort 저장하는 함수 만들어야 함
+                viewModelScope.launch {
+                    toDoRepository.changeSort(event.sort)
+                }
             }
             is UIEvent.SwipeToDeleteTask -> {
                 _selectedTaskState.value = event.task.toToDoTaskState()
