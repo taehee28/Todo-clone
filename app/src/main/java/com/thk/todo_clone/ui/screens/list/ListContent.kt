@@ -69,61 +69,7 @@ fun ListContent(
 }
 
 @Composable
-fun ListContent(
-    modifier: Modifier = Modifier,
-    allTasks: RequestState<List<ToDoTask>>,
-    searchedTasks: RequestState<List<ToDoTask>>,
-    lowPriorityTasks: List<ToDoTask>,
-    highPriorityTasks: List<ToDoTask>,
-    sortState: RequestState<Priority>,
-    searchAppBarState: SearchAppBarState,
-    onSwipeToDelete: (Action, ToDoTask) -> Unit,
-    navigateToTaskScreen: (taskId: Int) -> Unit
-) {
-    if (sortState is RequestState.Success) {
-        when {
-            searchAppBarState == SearchAppBarState.TRIGGERED -> {
-                if (searchedTasks is RequestState.Success) {
-                    HandleListContent(
-                        tasks = searchedTasks.data,
-                        onSwipeToDelete = onSwipeToDelete,
-                        navigateToTaskScreen = navigateToTaskScreen,
-                        modifier = modifier
-                    )
-                }
-            }
-            sortState.data == Priority.NONE -> {
-                if (allTasks is RequestState.Success) {
-                    HandleListContent(
-                        tasks = allTasks.data,
-                        onSwipeToDelete = onSwipeToDelete,
-                        navigateToTaskScreen = navigateToTaskScreen,
-                        modifier = modifier
-                    )
-                }
-            }
-            sortState.data == Priority.LOW -> {
-                HandleListContent(
-                    tasks = lowPriorityTasks,
-                    onSwipeToDelete = onSwipeToDelete,
-                    navigateToTaskScreen = navigateToTaskScreen,
-                    modifier = modifier
-                )
-            }
-            sortState.data == Priority.HIGH -> {
-                HandleListContent(
-                    tasks = highPriorityTasks,
-                    onSwipeToDelete = onSwipeToDelete,
-                    navigateToTaskScreen = navigateToTaskScreen,
-                    modifier = modifier
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun HandleListContent(      // new
+private fun HandleListContent(
     tasks: List<ToDoTask>,
     onSwipeToDelete: (UIEvent) -> Unit,
     navigateToTaskScreen: (taskId: Int) -> Unit,
@@ -142,26 +88,7 @@ private fun HandleListContent(      // new
 }
 
 @Composable
-fun HandleListContent(
-    tasks: List<ToDoTask>,
-    onSwipeToDelete: (Action, ToDoTask) -> Unit,
-    navigateToTaskScreen: (taskId: Int) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    if (tasks.isEmpty()) {
-        EmptyContent()
-    } else {
-        TaskList(
-            tasks = tasks,
-            onSwipeToDelete = onSwipeToDelete,
-            navigateToTaskScreen = navigateToTaskScreen,
-            modifier = modifier
-        )
-    }
-}
-
-@Composable
-private fun TaskList(   // new
+private fun TaskList(
     modifier: Modifier = Modifier,
     tasks: List<ToDoTask>,
     onSwipeToDelete: (UIEvent) -> Unit,
@@ -178,58 +105,6 @@ private fun TaskList(   // new
 
             if (isDismissed && dismissDirection == DismissDirection.EndToStart) {
                 onSwipeToDelete(UIEvent.SwipeToDeleteTask(task))
-            }
-
-            val degrees by animateFloatAsState(targetValue = if (dismissState.targetValue == DismissValue.Default) 0f else -45f)
-
-            var itemAppeared by remember { mutableStateOf(false) }
-            LaunchedEffect(key1 = true) {
-                itemAppeared = true
-            }
-
-            AnimatedVisibility(
-                visible = itemAppeared,
-                enter = expandVertically(
-                    animationSpec = tween(
-                        durationMillis = 300
-                    )
-                ),
-                modifier = Modifier.animateItemPlacement()
-            ) {
-                SwipeToDismiss(
-                    state = dismissState,
-                    directions = setOf(DismissDirection.EndToStart),
-                    dismissThresholds = { FractionalThreshold(fraction = 0.2f) },
-                    background = { RedBackGround(degrees = degrees) }
-                ) {
-                    TaskItem(
-                        toDoTask = task,
-                        navigateToTaskScreen = navigateToTaskScreen
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun TaskList(
-    modifier: Modifier = Modifier,
-    tasks: List<ToDoTask>,
-    onSwipeToDelete: (Action, ToDoTask) -> Unit,
-    navigateToTaskScreen: (taskId: Int) -> Unit
-) {
-    LazyColumn(modifier = modifier) {
-        items(
-            items = tasks,
-            key = { it.id }
-        ) { task ->
-            val dismissState = rememberDismissState()
-            val dismissDirection = dismissState.dismissDirection
-            val isDismissed = dismissState.isDismissed(DismissDirection.EndToStart)
-
-            if (isDismissed && dismissDirection == DismissDirection.EndToStart) {
-                onSwipeToDelete(Action.DELETE, task)
             }
 
             val degrees by animateFloatAsState(targetValue = if (dismissState.targetValue == DismissValue.Default) 0f else -45f)

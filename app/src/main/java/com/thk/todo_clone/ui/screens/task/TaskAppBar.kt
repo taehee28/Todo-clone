@@ -21,7 +21,7 @@ import com.thk.todo_clone.util.ToDoTaskState
 import com.thk.todo_clone.util.UIEvent
 
 @Composable
-fun TaskAppBar(     // new
+fun TaskAppBar(
     selectedTask: ToDoTaskState,
     buttonEnabledProvider: () -> Boolean,
     onBackClicked: () -> Unit,
@@ -29,7 +29,7 @@ fun TaskAppBar(     // new
     onUpdateClicked: () -> Unit,
     onDeleteClicked: () -> Unit
 ) {
-    if (selectedTask.id == 0) {
+    if (selectedTask.id == 0) {     // id가 0인 task는 없음
         NewTaskAppBar(
             buttonEnabledProvider = buttonEnabledProvider,
             onAddClicked = onAddClicked,
@@ -47,22 +47,7 @@ fun TaskAppBar(     // new
 }
 
 @Composable
-fun TaskAppBar(
-    selectedTask: ToDoTask?,
-    navigateToListScreen: (Action) -> Unit
-) {
-    if (selectedTask == null) {
-        NewTaskAppBar(navigateToListScreen = navigateToListScreen)
-    } else {
-        ExistingTaskAppBar(
-            selectedTask = selectedTask,
-            navigateToListScreen = navigateToListScreen
-        )
-    }
-}
-
-@Composable
-fun NewTaskAppBar(      // new
+fun NewTaskAppBar(
     buttonEnabledProvider: () -> Boolean,
     onAddClicked: () -> Unit,
     onBackClicked: () -> Unit
@@ -85,31 +70,7 @@ fun NewTaskAppBar(      // new
 }
 
 @Composable
-fun NewTaskAppBar(
-    navigateToListScreen: (Action) -> Unit
-) {
-    TopAppBar(
-        navigationIcon = {
-             /*BackAction(onBackClicked = navigateToListScreen)*/
-        },
-        title = {
-            Text(text = stringResource(id = R.string.add_task), color = MaterialTheme.colors.topAppBarContentColor)
-        },
-        backgroundColor = MaterialTheme.colors.topAppBarBackgroundColor,
-        actions = {
-            /*AddAction(onAddClicked = navigateToListScreen)*/
-        }
-    )
-}
-
-@Composable
-@Preview
-fun NewTaskAppBarPreview() {
-    NewTaskAppBar(navigateToListScreen = {})
-}
-
-@Composable
-fun BackAction(     // new
+fun BackAction(
     onBackClicked: () -> Unit
 ) = IconButton(onClick = { onBackClicked() }) {
     Icon(
@@ -119,19 +80,8 @@ fun BackAction(     // new
     )
 }
 
-/*@Composable
-fun BackAction(
-    onBackClicked: (Action) -> Unit
-) = IconButton(onClick = { onBackClicked(Action.NO_ACTION) }) {
-    Icon(
-        imageVector = Icons.Filled.ArrowBack,
-        contentDescription = stringResource(id = R.string.back_arrow),
-        tint = MaterialTheme.colors.topAppBarContentColor
-    )
-}*/
-
 @Composable
-fun AddAction(      // new
+fun AddAction(
     enabled: Boolean = true,
     onAddClicked: () -> Unit
 ) = IconButton(
@@ -145,19 +95,8 @@ fun AddAction(      // new
     )
 }
 
-/*@Composable
-fun AddAction(
-    onAddClicked: (Action) -> Unit
-) = IconButton(onClick = { onAddClicked(Action.ADD) }) {
-    Icon(
-        imageVector = Icons.Filled.Check,
-        contentDescription = stringResource(id = R.string.add_task),
-        tint = MaterialTheme.colors.topAppBarContentColor
-    )
-}*/
-
 @Composable
-fun ExistingTaskAppBar(     // new
+fun ExistingTaskAppBar(
     selectedTask: ToDoTaskState,
     buttonEnabledProvider: () -> Boolean,
     onUpdateClicked: () -> Unit,
@@ -190,34 +129,7 @@ fun ExistingTaskAppBar(     // new
 }
 
 @Composable
-fun ExistingTaskAppBar(
-    selectedTask: ToDoTask,
-    navigateToListScreen: (Action) -> Unit
-) {
-    TopAppBar(
-        navigationIcon = {
-            /*CloseAction(onCloseClicked = navigateToListScreen)*/
-        },
-        title = {
-            Text(
-                text = selectedTask.title,
-                color = MaterialTheme.colors.topAppBarContentColor,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        },
-        backgroundColor = MaterialTheme.colors.topAppBarBackgroundColor,
-        actions = {
-            ExistingTaskAppBarAction(
-                selectedTask = selectedTask,
-                navigateToListScreen = navigateToListScreen
-            )
-        }
-    )
-}
-
-@Composable
-fun ExistingTaskAppBarAction(       // new
+fun ExistingTaskAppBarAction(
     selectedTask: ToDoTaskState,
     buttonEnabledProvider: () -> Boolean,
     onUpdateClicked: () -> Unit,
@@ -245,41 +157,10 @@ fun ExistingTaskAppBarAction(       // new
     )
 }
 
-@Composable
-fun ExistingTaskAppBarAction(
-    selectedTask: ToDoTask,
-    navigateToListScreen: (Action) -> Unit
-) {
-    var openDialog by remember { mutableStateOf(false) }
-    
-    DisplayAlertDialog(
-        title = stringResource(id = R.string.delete_task, selectedTask.title),
-        message = stringResource(id = R.string.delete_task_confirmation, selectedTask.title),
-        openDialog = openDialog,
-        onCloseListener = { openDialog = false },
-        onYesClicked = { navigateToListScreen(Action.DELETE) }
-    )
 
-
-    DeleteAction(onDeleteClicked = { openDialog = true })
-    /*UpdateAction(onUpdateClicked = navigateToListScreen)*/
-}
 
 @Composable
-@Preview
-fun ExistingTaskAppBarPreview() {
-    ExistingTaskAppBar(
-        selectedTask = ToDoTask(
-            title = "title",
-            description = "this is description",
-            priority = Priority.LOW
-        ),
-        navigateToListScreen = {}
-    )
-}
-
-@Composable
-fun CloseAction(        // new
+fun CloseAction(
     onCloseClicked: () -> Unit
 ) = IconButton(onClick = { onCloseClicked() }) {
     Icon(
@@ -288,17 +169,6 @@ fun CloseAction(        // new
         tint = MaterialTheme.colors.topAppBarContentColor
     )
 }
-
-/*@Composable
-fun CloseAction(
-    onCloseClicked: (Action) -> Unit
-) = IconButton(onClick = { onCloseClicked(Action.NO_ACTION) }) {
-    Icon(
-        imageVector = Icons.Filled.Close,
-        contentDescription = stringResource(id = R.string.close_icon),
-        tint = MaterialTheme.colors.topAppBarContentColor
-    )
-}*/
 
 @Composable
 fun DeleteAction(
@@ -312,7 +182,7 @@ fun DeleteAction(
 }
 
 @Composable
-fun UpdateAction(       // new
+fun UpdateAction(
     enabled: Boolean = true,
     onUpdateClicked: () -> Unit
 ) = IconButton(
@@ -326,13 +196,24 @@ fun UpdateAction(       // new
     )
 }
 
-/*@Composable
-fun UpdateAction(
-    onUpdateClicked: (Action) -> Unit
-) = IconButton(onClick = { onUpdateClicked(Action.UPDATE) }) {
-    Icon(
-        imageVector = Icons.Filled.Check,
-        contentDescription = stringResource(id = R.string.update_icon),
-        tint = MaterialTheme.colors.topAppBarContentColor
+@Composable
+@Preview
+fun NewTaskAppBarPreview() {
+    NewTaskAppBar(
+        buttonEnabledProvider = { true },
+        onAddClicked = {},
+        onBackClicked = {}
     )
-}*/
+}
+
+@Composable
+@Preview
+fun ExistingTaskAppBarPreview() {
+    ExistingTaskAppBar(
+        selectedTask = ToDoTaskState(),
+        buttonEnabledProvider = { true },
+        onUpdateClicked = { /*TODO*/ },
+        onDeleteClicked = { /*TODO*/ },
+        onBackClicked = {}
+    )
+}

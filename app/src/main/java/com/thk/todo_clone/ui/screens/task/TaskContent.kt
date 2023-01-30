@@ -60,54 +60,14 @@ fun TaskContent(
 }
 
 @Composable
-fun TaskContent(
-    title: String,
-    onTitleChange: (String) -> Unit,
-    description: String,
-    onDescriptionChange: (String) -> Unit,
-    priority: Priority,
-    onPriorityChange: (Priority) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(all = TodoTheme.dimens.largePadding)
-    ) {
-        OutlinedTextField(
-            value = title,
-            onValueChange = onTitleChange,
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text(text = stringResource(id = R.string.title)) },
-            textStyle = MaterialTheme.typography.body1,
-            singleLine = true
-        )
-        Spacer(
-            modifier = Modifier.height(TodoTheme.dimens.mediumPadding)
-        )
-        PriorityDropDown(
-            priority = priority,
-            onPrioritySelected = onPriorityChange
-        )
-        OutlinedTextField(
-            value = description,
-            onValueChange = onDescriptionChange,
-            modifier = Modifier.fillMaxSize(),
-            label = { Text(text = stringResource(id = R.string.description)) },
-            textStyle = MaterialTheme.typography.body1
-        )
-    }
-}
-
-@Composable
 @Preview
 fun TaskContentPreview() {
     TaskContent(
         title = "this is title",
-        onTitleChange = {},
+        hasTitleError = false,
         description = "this is description",
-        onDescriptionChange = {},
-        priority = Priority.LOW,
-        onPriorityChange = {}
+        hasDescriptionError = false,
+        priority = Priority.MEDIUM,
+        onEvent = {}
     )
 }

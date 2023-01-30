@@ -57,66 +57,6 @@ fun TaskScreen(
     )
 }
 
-@Composable
-fun TaskScreen(
-    sharedViewModel: SharedViewModel,
-    navigateToListScreen: (Action) -> Unit
-) {
-    val selectedTask by sharedViewModel.selectedTask.collectAsState()
-
-    val title by sharedViewModel.title
-    val description by sharedViewModel.description
-    val priority by sharedViewModel.priority
-
-    val context = LocalContext.current
-
-    /*BackHandler(onBackPressed = { navigateToListScreen(Action.NO_ACTION) })*/
-
-    // 공식적으로 제공하는 Back 버튼 Handler
-    BackHandler { navigateToListScreen(Action.NO_ACTION) }
-
-    Scaffold(
-        topBar = {
-            TaskAppBar(
-                selectedTask = selectedTask,
-                navigateToListScreen = { action ->
-                    when (action) {
-                        Action.NO_ACTION -> navigateToListScreen(action)
-                        else -> {
-                            if (sharedViewModel.validateFields()) {
-                                navigateToListScreen(action)
-                            } else {
-                                Toast.makeText(
-                                    context,
-                                    "Empty fields",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-                    }
-                }
-            )
-        },
-        content = { paddingValues ->
-            TaskContent(
-                modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding()),
-                title = title,
-                onTitleChange = {
-                    sharedViewModel.updateTitle(it)
-                },
-                description = description,
-                onDescriptionChange = {
-                    sharedViewModel.description.value = it
-                },
-                priority = priority,
-                onPriorityChange = {
-                    sharedViewModel.priority.value = it
-                }
-            )
-        }
-    )
-}
-
 /*
 @Composable
 fun BackHandler(

@@ -20,6 +20,9 @@ import com.thk.todo_clone.util.SearchAppBarState
 import com.thk.todo_clone.util.UIEvent
 import kotlinx.coroutines.launch
 
+/**
+ * state
+ */
 @Composable
 fun ListScreen(
     navigateToTaskScreen: (Int) -> Unit,
@@ -41,6 +44,9 @@ fun ListScreen(
     )
 }
 
+/**
+ * stateless
+ */
 @Composable
 private fun ListScreen(
     taskList: RequestState<List<ToDoTask>>,
@@ -69,73 +75,6 @@ private fun ListScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(bottom = paddingValues.calculateBottomPadding())
-            )
-        }
-    )
-}
-
-@Composable
-fun ListScreen(
-    navigateToTaskScreen: (Int) -> Unit,
-    sharedViewModel: SharedViewModel
-) {
-    val searchAppBarState by sharedViewModel.searchAppBarState
-    val searchTextState by sharedViewModel.searchTextState
-    val allTasks by sharedViewModel.tasks.collectAsState()
-    val searchedTasks by sharedViewModel.searchedTask.collectAsState()
-    val action by sharedViewModel.action
-    val sortState by sharedViewModel.sortState.collectAsState()
-    val lowPriorityTasks by sharedViewModel.lowPriorityTasks.collectAsState()
-    val highPriorityTasks by sharedViewModel.highPriorityTasks.collectAsState()
-
-    val scaffoldState = rememberScaffoldState()
-
-    LaunchedEffect(key1 = action) {
-        sharedViewModel.handleDatabaseActions(action)
-    }
-
-
-    DisplaySnackBar(
-        scaffoldState = scaffoldState,
-        onComplete = { sharedViewModel.action.value = it },
-        onUndoClicked = {
-            sharedViewModel.action.value = it
-        },
-        taskTitle = sharedViewModel.title.value,
-        action = action
-    )
-
-    Scaffold(
-        scaffoldState = scaffoldState,
-        topBar = {
-            ListAppBar(
-                searchAppBarState = searchAppBarState,
-                setAppBarState = { sharedViewModel.searchAppBarState.value = it },
-                searchTextState = searchTextState,
-                setSearchTextState = { sharedViewModel.searchTextState.value = it },
-                searchDatabase = sharedViewModel::searchDatabase,
-                setAction = { sharedViewModel.action.value = it },
-                persistSortState = sharedViewModel::persistSortState
-            )
-        },
-        floatingActionButton = { ListFab(onFabClicked = navigateToTaskScreen) },
-        content = { paddingValues ->
-            ListContent(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = paddingValues.calculateBottomPadding()),
-                allTasks = allTasks,
-                searchedTasks = searchedTasks,
-                lowPriorityTasks = lowPriorityTasks,
-                highPriorityTasks = highPriorityTasks,
-                sortState = sortState,
-                searchAppBarState = searchAppBarState,
-                onSwipeToDelete = { action, task ->
-                    sharedViewModel.action.value = action
-                    sharedViewModel.updateTaskFields(selectedTask = task)
-                    scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-                },
-                navigateToTaskScreen = navigateToTaskScreen
             )
         }
     )
@@ -203,10 +142,3 @@ private fun undoDeleteTask(
         onUndoClicked(Action.UNDO)
     }
 }
-
-/*
-@Composable
-@Preview
-private fun ListScreenPreview() {
-    ListScreen(navigateToTaskScreen = {})
-}*/

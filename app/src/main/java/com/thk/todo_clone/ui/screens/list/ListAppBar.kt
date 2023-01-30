@@ -31,7 +31,7 @@ import com.thk.todo_clone.util.SearchAppBarState
 import com.thk.todo_clone.util.UIEvent
 
 @Composable
-fun ListAppBar(     // new
+fun ListAppBar(
     searchAppBarState: SearchAppBarState,
     onEvent: (UIEvent) -> Unit
 ) {
@@ -47,42 +47,6 @@ fun ListAppBar(     // new
             SearchAppBar(
                 onCloseClicked = { onEvent(UIEvent.CloseSearch) },
                 onSearchClicked = { onEvent(UIEvent.SearchTasks(it)) }
-            )
-        }
-    }
-}
-
-@Composable
-fun ListAppBar(
-    searchAppBarState: SearchAppBarState,
-    setAppBarState: (SearchAppBarState) -> Unit,
-    searchTextState: String,
-    setSearchTextState: (String) -> Unit,
-    searchDatabase: (String) -> Unit,
-    setAction: (Action) -> Unit,
-    persistSortState: (Priority) -> Unit
-) {
-    when (searchAppBarState) {
-        SearchAppBarState.CLOSED -> {
-            DefaultListAppBar(
-                onSearchClicked = { setAppBarState(SearchAppBarState.OPENED) },
-                onSortClicked = { persistSortState(it) },
-                onDeleteAllClicked = {
-                    setAction(Action.DELETE_ALL)
-                }
-            )
-        }
-        else -> {
-            SearchAppBar(
-                text = searchTextState,
-                onTextChange = setSearchTextState,
-                onCloseClicked = {
-                    setAppBarState(SearchAppBarState.CLOSED)
-                    /*setSearchTextState("")*/
-                },
-                onSearchClicked = {
-                    searchDatabase(it)
-                }
             )
         }
     }
@@ -222,9 +186,11 @@ private fun DeleteAllAction(
     }
 }
 
-
+/**
+ * state
+ */
 @Composable
-private fun SearchAppBar(   // new
+private fun SearchAppBar(
     onCloseClicked: () -> Unit,
     onSearchClicked: (String) -> Unit
 ) {
@@ -238,6 +204,9 @@ private fun SearchAppBar(   // new
     )
 }
 
+/**
+ * stateless
+ */
 @Composable
 private fun SearchAppBar(
     text: String,
