@@ -43,9 +43,12 @@ class ToDoViewModel @Inject constructor(
     val searchAppBarState: State<SearchAppBarState>
         get() = _searchAppBarState
 
-    // TODO: Composable에 전달 할 SanckBar와 Toast 표시를 나타내는 이벤트 변수 정의
+    private val _snackBarState = MutableStateFlow<SnackBarState?>(null)
+    val snackBarState
+        get() = _snackBarState.asStateFlow()
 
     fun onEvent(event: UIEvent) {
+        logd(">> onEvent = $event")
         when (event) {
             is UIEvent.SelectTask -> {
                 getSelectedTask(event.id)
@@ -79,19 +82,42 @@ class ToDoViewModel @Inject constructor(
             is UIEvent.SwipeToDeleteTask -> {
                 _selectedTaskState.value = event.task.toToDoTaskState()
                 deleteTask()
+                emitSnackBarState(
+                    SnackBarState.Delete(
+                        title = _selectedTaskState.value.title,
+                        block = {
+                            // lazyColumn에서 key로 id를 사용하고 있기 때문에
+                            // id를 그대로 다시 insert하면 swipe해서 dismiss된 item이 그대로 살아남
+                            _selectedTaskState.update { it.copy(id = 0) }
+                            addTask()
+                        }
+                    )
+                )
             }
             is UIEvent.AddTask -> {
                 addTask()
                 _searchAppBarState.value = SearchAppBarState.CLOSED
+                emitSnackBarState(SnackBarState.Add(_selectedTaskState.value.title))
             }
             is UIEvent.UpdateTask -> {
                 updateTask()
+                emitSnackBarState(SnackBarState.Update(_selectedTaskState.value.title))
             }
             is UIEvent.DeleteTask -> {
                 deleteTask()
+                emitSnackBarState(
+                    SnackBarState.Delete(
+                        title = _selectedTaskState.value.title,
+                        block = {
+                            _selectedTaskState.update { it.copy(id = 0) }
+                            addTask()
+                        }
+                    )
+                )
             }
             is UIEvent.DeleteAllTasks -> {
                 deleteAllTasks()
+                emitSnackBarState(SnackBarState.DeleteAll)
             }
             is UIEvent.Undo -> {}
             is UIEvent.SearchTasks -> {
@@ -104,18 +130,17 @@ class ToDoViewModel @Inject constructor(
             is UIEvent.CloseSearch -> {
                 _searchAppBarState.value = SearchAppBarState.CLOSED
             }
+            is UIEvent.SnackBarDismissed -> {
+                _snackBarState.value = null
+            }
         }
     }
 
     private fun getSelectedTask(taskId: Int) = viewModelScope.launch {
-        toDoRepository.getSelectedTask(taskId).collectLatest {
-            // TODO: -1이 오면 null? nullable로 바꾸기
-            _selectedTaskState.value = if (it == null) {
-                ToDoTaskState()
-            } else {
-                it.toToDoTaskState()
-            }
-        }
+        // collect를 하면 선택한 Task를 삭제했을 때 null이 collect된다 -> undo 불가능
+        // 최초 한개만 collect하고 flow를 닫아서 null이 넘어오지 않게 함
+        val task = toDoRepository.getSelectedTask(taskId).first()
+        _selectedTaskState.value = task?.toToDoTaskState() ?: ToDoTaskState()
     }
 
     private fun addTask() = viewModelScope.launch {
@@ -146,5 +171,9 @@ class ToDoViewModel @Inject constructor(
             .collectLatest {
                 _searchedTaskList.value = RequestState.Success(it)
             }
+    }
+
+    private fun emitSnackBarState(state: SnackBarState) = viewModelScope.launch {
+        _snackBarState.emit(state)
     }
 }
