@@ -104,9 +104,7 @@ private fun TaskList(
             val isDismissed = dismissState.isDismissed(DismissDirection.EndToStart)
 
             if (isDismissed && dismissDirection == DismissDirection.EndToStart) {
-                // FIXME: undo할 때마다 여기가 호출됨
                 onSwipeToDelete(UIEvent.SwipeToDeleteTask(task))
-                // todo: dismissState를 초기화 하는 코드 넣어보기? 
             }
 
             val degrees by animateFloatAsState(targetValue = if (dismissState.targetValue == DismissValue.Default) 0f else -45f)

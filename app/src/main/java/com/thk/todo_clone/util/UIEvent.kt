@@ -18,4 +18,5 @@ sealed class UIEvent {
     object Undo : UIEvent()
     object OpenSearch : UIEvent()
     object CloseSearch : UIEvent()
+    object SnackBarDismissed : UIEvent()
 }

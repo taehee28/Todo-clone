@@ -85,7 +85,12 @@ class ToDoViewModel @Inject constructor(
                 emitSnackBarState(
                     SnackBarState.Delete(
                         title = _selectedTaskState.value.title,
-                        block = { addTask() }
+                        block = {
+                            // lazyColumn에서 key로 id를 사용하고 있기 때문에
+                            // id를 그대로 다시 insert하면 swipe해서 dismiss된 item이 그대로 살아남
+                            _selectedTaskState.update { it.copy(id = 0) }
+                            addTask()
+                        }
                     )
                 )
             }
@@ -103,7 +108,10 @@ class ToDoViewModel @Inject constructor(
                 emitSnackBarState(
                     SnackBarState.Delete(
                         title = _selectedTaskState.value.title,
-                        block = { addTask() }
+                        block = {
+                            _selectedTaskState.update { it.copy(id = 0) }
+                            addTask()
+                        }
                     )
                 )
             }
@@ -121,6 +129,9 @@ class ToDoViewModel @Inject constructor(
             }
             is UIEvent.CloseSearch -> {
                 _searchAppBarState.value = SearchAppBarState.CLOSED
+            }
+            is UIEvent.SnackBarDismissed -> {
+                _snackBarState.value = null
             }
         }
     }

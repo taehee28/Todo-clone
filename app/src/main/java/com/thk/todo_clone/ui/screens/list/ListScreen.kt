@@ -39,7 +39,6 @@ fun ListScreen(
     
     LaunchedEffect(key1 = snackBarState) {
         snackBarState?.also {
-            logd(">> snackBar = $it")
             val snackBarResult = scaffoldState.snackbarHostState.showSnackbar(
                 message = it.message,
                 actionLabel = it.actionLabel
@@ -48,6 +47,8 @@ fun ListScreen(
             if (snackBarResult == SnackbarResult.ActionPerformed) {
                 it.action?.invoke()
             }
+
+            toDoViewModel.onEvent(UIEvent.SnackBarDismissed)
         }
     }
 
