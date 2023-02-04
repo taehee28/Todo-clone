@@ -12,15 +12,11 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import com.thk.data.models.Priority
-import com.thk.data.models.ToDoTask
 import com.thk.todo_clone.ui.theme.topAppBarBackgroundColor
 import com.thk.todo_clone.ui.theme.topAppBarContentColor
-import com.thk.todo_clone.util.Action
 import com.thk.todo_clone.R
 import com.thk.todo_clone.ui.components.DisplayAlertDialog
-import com.thk.todo_clone.util.ToDoTaskState
-import com.thk.todo_clone.util.UIEvent
+import com.thk.todo_clone.model.ToDoTaskState
 
 @Composable
 fun TaskAppBar(

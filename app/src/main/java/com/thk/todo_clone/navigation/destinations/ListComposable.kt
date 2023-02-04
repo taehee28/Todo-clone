@@ -2,22 +2,14 @@
 
 package com.thk.todo_clone.navigation.destinations
 
-import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.*
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import com.google.accompanist.navigation.animation.composable
 import androidx.navigation.navArgument
 import com.thk.data.util.Constants
 import com.thk.todo_clone.ui.screens.list.ListScreen
-import com.thk.todo_clone.ui.viewmodel.SharedViewModel
 import com.thk.todo_clone.ui.viewmodel.ToDoViewModel
-import com.thk.todo_clone.util.Action
-import com.thk.todo_clone.util.toAction
 
 /**
  * list 화면에 대한 navGraph의 composable 호출을 해당 화면 파일에 모아둠

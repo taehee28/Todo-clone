@@ -1,8 +1,11 @@
-package com.thk.todo_clone.util
+package com.thk.todo_clone.model
 
 import com.thk.data.models.Priority
 import com.thk.data.models.ToDoTask
 
+/**
+ * Composable에서 ViewModel로 전달하는 Event
+ */
 sealed class UIEvent {
     data class SelectTask(val id: Int) : UIEvent()
     data class TitleChanged(val title: String) : UIEvent()

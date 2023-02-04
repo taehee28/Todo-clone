@@ -10,9 +10,9 @@ import com.thk.data.datasource.DataStoreSource
 import com.thk.data.models.Priority
 import com.thk.data.models.ToDoTask
 import com.thk.data.repository.ToDoRepository
-import com.thk.todo_clone.util.Action
-import com.thk.todo_clone.util.RequestState
-import com.thk.todo_clone.util.SearchAppBarState
+import com.thk.todo_clone.model.Action
+import com.thk.todo_clone.model.RequestState
+import com.thk.todo_clone.model.SearchAppBarState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@Deprecated("더이상 사용하지 않음")
 @HiltViewModel
 class SharedViewModel @Inject constructor(
     private val toDoRepository: ToDoRepository,

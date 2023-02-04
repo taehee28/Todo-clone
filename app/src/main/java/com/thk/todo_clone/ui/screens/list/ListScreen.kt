@@ -8,18 +8,15 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.repeatOnLifecycle
 import com.thk.data.models.ToDoTask
 import com.thk.todo_clone.R
+import com.thk.todo_clone.model.Action
+import com.thk.todo_clone.model.RequestState
+import com.thk.todo_clone.model.SearchAppBarState
+import com.thk.todo_clone.model.UIEvent
 import com.thk.todo_clone.ui.theme.fabBackgroundColor
-import com.thk.todo_clone.ui.viewmodel.SharedViewModel
 import com.thk.todo_clone.ui.viewmodel.ToDoViewModel
-import com.thk.todo_clone.util.*
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 /**

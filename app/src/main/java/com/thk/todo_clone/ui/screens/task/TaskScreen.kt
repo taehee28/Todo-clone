@@ -1,17 +1,12 @@
 package com.thk.todo_clone.ui.screens.task
 
-import android.widget.Toast
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import com.thk.data.models.Priority
-import com.thk.todo_clone.ui.viewmodel.SharedViewModel
 import com.thk.todo_clone.ui.viewmodel.ToDoViewModel
-import com.thk.todo_clone.util.Action
-import com.thk.todo_clone.util.UIEvent
+import com.thk.todo_clone.model.Action
+import com.thk.todo_clone.model.UIEvent
 
 @Composable
 fun TaskScreen(

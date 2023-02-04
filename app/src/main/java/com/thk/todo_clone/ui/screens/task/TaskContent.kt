@@ -1,7 +1,6 @@
 package com.thk.todo_clone.ui.screens.task
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -13,7 +12,7 @@ import com.thk.data.models.Priority
 import com.thk.todo_clone.R
 import com.thk.todo_clone.ui.components.PriorityDropDown
 import com.thk.todo_clone.ui.theme.TodoTheme
-import com.thk.todo_clone.util.UIEvent
+import com.thk.todo_clone.model.UIEvent
 
 @Composable
 fun TaskContent(

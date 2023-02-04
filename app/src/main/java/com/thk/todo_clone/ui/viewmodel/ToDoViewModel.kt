@@ -4,9 +4,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.thk.data.models.Priority
 import com.thk.data.models.ToDoTask
 import com.thk.data.repository.ToDoRepository
+import com.thk.todo_clone.model.*
 import com.thk.todo_clone.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -17,6 +17,9 @@ import javax.inject.Inject
 class ToDoViewModel @Inject constructor(
     private val toDoRepository: ToDoRepository
 ) : ViewModel() {
+    /**
+     * 전체 Task 목록
+     */
     val taskList = toDoRepository
         .getSortedTasks()
         .catch {
@@ -31,22 +34,37 @@ class ToDoViewModel @Inject constructor(
             initialValue = RequestState.Idle
         )
 
+    /**
+     * 검색 결과 Task 목록
+     */
     private val _searchedTaskList = MutableStateFlow<RequestState<List<ToDoTask>>>(RequestState.Idle)
     val searchedTaskList
         get() = _searchedTaskList.asStateFlow()
 
+    /**
+     * TaskScreen에서 표시할 Task
+     */
     private val _selectedTaskState = MutableStateFlow<ToDoTaskState>(ToDoTaskState())
     val selectedTaskState
         get() = _selectedTaskState.asStateFlow()
 
+    /**
+     * SearchAppBar의 상태
+     */
     private val _searchAppBarState = mutableStateOf(SearchAppBarState.CLOSED)
     val searchAppBarState: State<SearchAppBarState>
         get() = _searchAppBarState
 
+    /**
+     * 화면에서 SanckBar 표시하기 위해 사용하는 State
+     */
     private val _snackBarState = MutableStateFlow<SnackBarState?>(null)
     val snackBarState
         get() = _snackBarState.asStateFlow()
 
+    /**
+     * Composable에서 Event 전달하기 위해 호출하는 함수
+     */
     fun onEvent(event: UIEvent) {
         logd(">> onEvent = $event")
         when (event) {

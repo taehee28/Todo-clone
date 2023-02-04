@@ -6,7 +6,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -30,6 +29,9 @@ import androidx.compose.ui.unit.dp
 import com.thk.data.models.Priority
 import com.thk.data.models.ToDoTask
 import com.thk.todo_clone.R
+import com.thk.todo_clone.model.RequestState
+import com.thk.todo_clone.model.SearchAppBarState
+import com.thk.todo_clone.model.UIEvent
 import com.thk.todo_clone.ui.theme.HighPriorityColor
 import com.thk.todo_clone.ui.theme.TodoTheme
 import com.thk.todo_clone.ui.theme.taskItemBackgroundColor

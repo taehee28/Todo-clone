@@ -1,4 +1,4 @@
-package com.thk.todo_clone.util
+package com.thk.todo_clone.model
 
 enum class Action {
     ADD,

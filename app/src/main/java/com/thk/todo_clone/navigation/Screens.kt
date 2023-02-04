@@ -2,7 +2,7 @@ package com.thk.todo_clone.navigation
 
 import androidx.navigation.NavHostController
 import com.thk.data.util.Constants
-import com.thk.todo_clone.util.Action
+import com.thk.todo_clone.model.Action
 
 class Screens(navController: NavHostController) {
     /* 화면 이동에 대한 lambda는 여기에 모아둠 */

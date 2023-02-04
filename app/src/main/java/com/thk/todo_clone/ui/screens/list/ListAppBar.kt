@@ -26,9 +26,8 @@ import com.thk.todo_clone.ui.components.DisplayAlertDialog
 import com.thk.todo_clone.ui.components.PriorityItem
 import com.thk.todo_clone.ui.theme.TodoTheme
 import com.thk.todo_clone.ui.theme.Typography
-import com.thk.todo_clone.util.Action
-import com.thk.todo_clone.util.SearchAppBarState
-import com.thk.todo_clone.util.UIEvent
+import com.thk.todo_clone.model.SearchAppBarState
+import com.thk.todo_clone.model.UIEvent
 
 @Composable
 fun ListAppBar(
