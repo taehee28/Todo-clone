@@ -25,3 +25,4 @@ To-do App 클론 프로젝트
 * ~~SnackBar 표시 기능 구현~~
 * ~~TaskAppBar에서 check 버튼이 disable일 때 disable하게 보이도록 수정하기~~
 * 코드 정리 
+* Splash 화면 수정하기
