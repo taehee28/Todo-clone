@@ -23,5 +23,5 @@ To-do App 클론 프로젝트
 * ~~DataStoreRepository -> DataStoreSource 변경하기~~
 * ~~Priority 저장할 수 있게 구현하기~~ 
 * ~~SnackBar 표시 기능 구현~~
-* TaskAppBar에서 check 버튼이 disable일 때 disable하게 보이도록 수정하기
+* ~~TaskAppBar에서 check 버튼이 disable일 때 disable하게 보이도록 수정하기~~
 * 코드 정리 

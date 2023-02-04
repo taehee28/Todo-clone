@@ -7,6 +7,8 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -91,7 +93,8 @@ fun AddAction(
     Icon(
         imageVector = Icons.Filled.Check,
         contentDescription = stringResource(id = R.string.add_task),
-        tint = MaterialTheme.colors.topAppBarContentColor
+        tint = MaterialTheme.colors.topAppBarContentColor,
+        modifier = Modifier.alpha(if (enabled) ContentAlpha.high else ContentAlpha.disabled)
     )
 }
 
@@ -192,7 +195,8 @@ fun UpdateAction(
     Icon(
         imageVector = Icons.Filled.Check,
         contentDescription = stringResource(id = R.string.update_icon),
-        tint = MaterialTheme.colors.topAppBarContentColor
+        tint = MaterialTheme.colors.topAppBarContentColor,
+        modifier = Modifier.alpha(if (enabled) ContentAlpha.high else ContentAlpha.disabled)
     )
 }
 
