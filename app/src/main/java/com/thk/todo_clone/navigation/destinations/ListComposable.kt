@@ -21,11 +21,8 @@ fun NavGraphBuilder.listComposable(
     toDoViewModel: ToDoViewModel
 ) {
     composable(
-        route = Constants.SCREEN_LIST,
-        arguments = listOf(navArgument(Constants.ARG_KEY_LIST) {
-            type = NavType.StringType
-        })
-    ) { navBackStackEntry ->
+        route = Constants.SCREEN_LIST
+    ) {
         ListScreen(navigateToTaskScreen = navigateToTaskScreen, toDoViewModel = toDoViewModel)
     }
 }

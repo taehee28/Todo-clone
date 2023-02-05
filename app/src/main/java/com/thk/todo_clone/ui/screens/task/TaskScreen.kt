@@ -11,7 +11,7 @@ import com.thk.todo_clone.model.UIEvent
 @Composable
 fun TaskScreen(
     toDoViewModel: ToDoViewModel,
-    navigateToListScreen: (Action) -> Unit
+    navigateToListScreen: () -> Unit
 ) {
     val selectedTask by toDoViewModel.selectedTaskState.collectAsState()
     val buttonEnabled by remember {
@@ -23,18 +23,18 @@ fun TaskScreen(
            TaskAppBar(
                selectedTask = selectedTask,
                buttonEnabledProvider = { buttonEnabled },
-               onBackClicked = { navigateToListScreen(Action.NO_ACTION) },
+               onBackClicked = { navigateToListScreen() },
                onAddClicked = {
                    toDoViewModel.onEvent(UIEvent.AddTask)
-                   navigateToListScreen(Action.NO_ACTION)
+                   navigateToListScreen()
                },
                onUpdateClicked = {
                    toDoViewModel.onEvent(UIEvent.UpdateTask)
-                   navigateToListScreen(Action.NO_ACTION)
+                   navigateToListScreen()
                },
                onDeleteClicked = {
                    toDoViewModel.onEvent(UIEvent.DeleteTask)
-                   navigateToListScreen(Action.NO_ACTION)
+                   navigateToListScreen()
                }
            )
         },

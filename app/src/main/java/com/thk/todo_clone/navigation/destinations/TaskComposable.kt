@@ -22,7 +22,7 @@ import com.thk.todo_clone.model.UIEvent
  * @param navigateToListScreen task 화면에서 list 화면으로 이동할 수 있게 해주는 lambda
  */
 fun NavGraphBuilder.taskComposable(
-    navigateToListScreen: (Action) -> Unit,
+    navigateToListScreen: () -> Unit,
     toDoViewModel: ToDoViewModel
 ) {
     composable(

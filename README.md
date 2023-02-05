@@ -26,4 +26,4 @@ To-do App 클론 프로젝트
 * ~~TaskAppBar에서 check 버튼이 disable일 때 disable하게 보이도록 수정하기~~
 * 코드 정리 
 * Splash 화면 수정하기
-* Action enum 사용 제거 
+* ~~Action enum 사용 제거~~

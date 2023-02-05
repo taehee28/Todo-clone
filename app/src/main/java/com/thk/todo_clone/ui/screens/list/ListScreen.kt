@@ -109,6 +109,7 @@ private fun ListFab(
     )
 }
 
+@Deprecated("더이상 사용하지 않음")
 @Composable
 fun DisplaySnackBar(
     scaffoldState: ScaffoldState,
