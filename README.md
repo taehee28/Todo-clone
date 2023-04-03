@@ -1,6 +1,12 @@
 # Todo-clone
 To-do App 클론 프로젝트
 
+<p align="center">
+    <img src="./img/Todo-clone_list.jpg" width="260">
+    <img src="./img/Todo-clone_add.jpg" width="260">
+    <img src="./img/Todo-clone_recording.gif" width="260">
+</p>
+
 ## 기능
 * 제목, 중요도, 내용을 가지는 To-do 항목을 생성, 수정, 삭제 가능
 * 저장된 To-do 항목을 검색 가능
@@ -24,6 +30,6 @@ To-do App 클론 프로젝트
 * ~~Priority 저장할 수 있게 구현하기~~ 
 * ~~SnackBar 표시 기능 구현~~
 * ~~TaskAppBar에서 check 버튼이 disable일 때 disable하게 보이도록 수정하기~~
-* 코드 정리 
+* ~~코드 정리~~
 * ~~Splash 화면 수정하기~~
 * ~~Action enum 사용 제거~~
